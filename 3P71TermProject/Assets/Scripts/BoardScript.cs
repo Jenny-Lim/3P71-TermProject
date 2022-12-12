@@ -7,7 +7,7 @@ public class BoardScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // pogchamp
     }
 
     // Update is called once per frame
