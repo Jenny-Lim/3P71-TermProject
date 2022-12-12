@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardScript : MonoBehaviour
+public class Piece : MonoBehaviour
 {
 
-    Piece board[][] = new Piece[][];
+    int score;
+    bool isTaken;
+    int xPosition;
+    int yPosition;
 
     // Start is called before the first frame update
     void Start()
     {
-        // pogchamp
-        //test line 2 
+        
     }
 
     // Update is called once per frame
