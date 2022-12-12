@@ -8,6 +8,7 @@ public class BoardScript : MonoBehaviour
     void Start()
     {
         // pogchamp
+        //test line 2 
     }
 
     // Update is called once per frame
