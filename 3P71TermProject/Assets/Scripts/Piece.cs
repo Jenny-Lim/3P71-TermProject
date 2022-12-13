@@ -12,12 +12,12 @@ public class Piece : MonoBehaviour
     int yPosition;
     string type;
 
-    public Piece(int value, bool isTaken, bool isBlack; int xPosition; int yPosition)
+    public Piece(int value, bool isTaken, bool isBlack, int xPosition, int yPosition)
     {
         this.value = value;
         this.isTaken = isTaken;
         this.isBlack = isBlack;
-        this.xPosiiton = xPosition;
+        this.xPosition = xPosition;
         this.yPosition = yPosition;
     }
 
