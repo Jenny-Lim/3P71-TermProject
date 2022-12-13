@@ -7,7 +7,7 @@ public class BoardScript : MonoBehaviour
 
     /* --just turning into comment so unity saves
 
-    Piece board[][] = new Piece[8][8]; - sorry just need to turn into comment so unity saves
+    Piece board[][] = new Piece[8][8]; - sorry just need to turn into comment so unity saves // dats fine yo :]
 
         // initializing AI pieces
 
