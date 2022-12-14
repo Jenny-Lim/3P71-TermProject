@@ -14,7 +14,7 @@ public class BoardScript : MonoBehaviour
         // pogchamp
         //test line 2 
 
-        //makeBoard();
+        //MakeBoard();
     }
 
     // Update is called once per frame
@@ -23,7 +23,7 @@ public class BoardScript : MonoBehaviour
         
     }
 
-    void makeBoard() // bruh
+    void MakeBoard() // bruh
     {
 
         // ai pieces
@@ -59,29 +59,29 @@ public class BoardScript : MonoBehaviour
         board[7, 1] = new Piece(false, false, 7, 1, "knight");
         board[7, 0] = new Piece(false, false, 7, 0, "rook");
 
-    }
+    } // MakeBoard
 
-    void movePiece() // board can have reference to the pieces,
+    void MovePiece() // board can have reference to the pieces,
     {
-        // get input from user = pieceselected (as a coordinate)
-        // get input from user = someOtherSpot (compare with canMove, set as coordinate)
-        //if board[pieceSelected.xPosition, pieceSelected.yPosition] != null
-        // board[pieceSelected.xPosition, pieceSelected.yPosition].isTaken = true;
+        // get input from user = pieceselected
+        // get input from user = someOtherSpot -- chosen spot (compare with canMove, set new coordinates on pieceselected)
+        //if board[someOtherSpot.xPosition, someOtherSpot.yPosition] != null
+        // board[someOtherSpot.xPosition, someOtherSpot.yPosition].isTaken = true;
 
-        //if pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == 7
-        //promote
+        //if (pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == board.Length-1){
+        //promote}
 
-        //if !pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == 0
-        //promote
+        //if (!pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == 0){
+        //promote}
 
         //go through all opposing pieces, and within the piece go through all moves
         //if king is in any index of canMove that == true of opposing piece
         //check
 
         //if spaces between king and rook is clear, king can move two spaces closer to rook and rook can jump 1 spot over king // castling
-    }
+    } // MovePiece
 
-    void boardEval()
+    void BoardEval()
     {
 
         int eval = 0;
@@ -100,5 +100,5 @@ public class BoardScript : MonoBehaviour
                 }
             }
         }
-    }
+    } // BoardEval
 }
