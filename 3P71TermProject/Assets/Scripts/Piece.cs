@@ -14,16 +14,16 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
-    private int value; // value of the piece
-    private bool isTaken; // if its taken
+    public int value; // value of the piece
+    public bool isTaken; // if its taken
 
-    private bool isBlack; // if its our (Ais)
+    public bool isBlack; // if its our (Ais)
 
     // set these in board script
-    private int xPosition;
-    private int yPosition;
+    public int xPosition;
+    public int yPosition;
 
-    private string type;
+    public string type;
 
 
     public Piece(bool isTaken, bool isBlack, int xPosition, int yPosition, string type)
