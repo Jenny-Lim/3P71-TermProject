@@ -68,17 +68,37 @@ public class BoardScript : MonoBehaviour
         //if board[pieceSelected.xPosition, pieceSelected.yPosition] != null
         // board[pieceSelected.xPosition, pieceSelected.yPosition].isTaken = true;
 
-        //if pieceSelected.isBlack
-        //then if pieceSelected.yPosition == 7
+        //if pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == 7
         //promote
 
-        //if !pieceSelected.isBlack
-        //then if pieceSelected.yPosition == 0
+        //if !pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == 0
         //promote
 
+        //go through all opposing pieces, and within the piece go through all moves
         //if king is in any index of canMove that == true of opposing piece
         //check
 
         //if spaces between king and rook is clear, king can move two spaces closer to rook and rook can jump 1 spot over king // castling
+    }
+
+    void boardEval()
+    {
+
+        int eval = 0;
+
+        for(int i = 0; i<board.Length; i++)
+        {
+            for (int j = 0; j<board.Length; j++)
+            {
+                if (board[i, j].isBlack) // ai - maximizing score
+                {
+                    eval = eval + board[i, j].value;
+                }
+                if (!board[i, j].isBlack) // player - minimizing score
+                {
+                    eval = eval - board[i, j].value;
+                }
+            }
+        }
     }
 }

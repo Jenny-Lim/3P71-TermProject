@@ -50,10 +50,14 @@ public class Piece : MonoBehaviour
         {
 
             // some check if its the pawn's first move
+            // canMove[xPosition,yPosition+2] = true;
 
-            canMove[xPosition,yPosition + 1] = true;
+            if (yPosition < canMove.Length - 1)
+            {
+                canMove[xPosition, yPosition + 1] = true;
+            }
 
-            //capturing is toggled on when theres a piece in range (see below)
+            //capturing is toggled on when theres a piece in range (see below), have this in board script
 
             //if (Board.board[xPosition + 1][yPosition + 1]!=null)
             // then capture == true
@@ -66,9 +70,16 @@ public class Piece : MonoBehaviour
 
         if (type == "knight") // knights move in an 'L'
         {
-            canMove[xPosition + 2,yPosition + 1] = true;
-            canMove[xPosition + 1,yPosition + 2] = true;
+            if (xPosition < canMove.Length - 1 && yPosition < canMove.Length)
+            {
+                canMove[xPosition + 2, yPosition + 1] = true;
+            }
 
+            if (xPosition < canMove.Length && yPosition < canMove.Length - 1) {
+                canMove[xPosition + 1,yPosition + 2] = true;
+                }
+
+            //if(xPosition > ) i left off here
             canMove[xPosition - 2,yPosition - 1] = true;
             canMove[xPosition - 1,yPosition - 2] = true;
         }
@@ -150,7 +161,7 @@ public class Piece : MonoBehaviour
                 }
         if (type == "king")
         {
-            value = int.MaxValue;
+            value = 0; // no point in assigning val to king ?
                 }
     }
 
