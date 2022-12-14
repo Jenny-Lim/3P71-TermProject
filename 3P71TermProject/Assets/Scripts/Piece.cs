@@ -36,7 +36,7 @@ public class Piece : MonoBehaviour
     }
 
 
-    public bool[,] MoveCheck() // must also check if there's a piece on the board, need reference to the actual board
+    public bool[,] MoveCheck() // must also check if there's a piece on the board
     {
         bool[,] canMove = new bool[8, 8];
     for (int i = 0; i<canMove.Length; i++)
