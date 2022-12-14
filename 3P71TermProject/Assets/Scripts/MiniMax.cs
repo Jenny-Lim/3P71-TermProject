@@ -10,6 +10,12 @@ public class MiniMax : MonoBehaviour
 
     private Node root;
 
+    [SerializeField]
+    private List<GameObject> blackPieces;
+
+    [SerializeField]
+    private List<GameObject> whitePieces;
+
     private int counter=0;
 
 
@@ -20,13 +26,18 @@ public class MiniMax : MonoBehaviour
         root = CreateTree(depth);
         Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,root ,true, -1000000, 1000000));
         Debug.Log("alpha-beta counter: "+counter);
+        boardArray();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown("space"))
+        {
+            Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,root ,true, -1000000, 1000000));
+        }
         
-    }
+    } 
 
     private Node CreateTree(int depth)
     {
@@ -35,6 +46,44 @@ public class MiniMax : MonoBehaviour
         childrenNodes(depth, tree);
     
         return tree;
+    }
+
+    private char[][] boardArray()
+    {
+        char[][] board = new char[8][];
+        for(int i = 0;i<8;i++)
+        {
+            board[i] = new char[8];
+        }
+
+                for(int i = 0;i<8;i++)
+                {
+                    for(int j = 0;j<8;j++)
+                    {
+                        board[i][j] = '_';
+                    }
+                }
+
+        foreach (var piece in whitePieces) 
+        {
+            board[(int)(piece.transform.position.y)*(-1)][(int)(piece.transform.position.x)] = 'P';
+        }
+        foreach (var piece in blackPieces) 
+        {
+            board[(int)(piece.transform.position.y)*(-1)][(int)(piece.transform.position.x)] = 'p';
+        }
+
+                for(int i = 0;i<8;i++)
+                {
+                    for(int j = 0;j<8;j++)
+                    {
+                        Debug.Log(board[i][j]);
+                    }
+                }
+
+        whitePieces[6].transform.position = new Vector3(3f, -4f, 0f);
+        
+        return board;
     }
 
     private void childrenNodes(int depth, Node node)
@@ -113,6 +162,7 @@ public class MiniMax : MonoBehaviour
 public class Node
     {
 
+        public char[][] board = new char[8][];
         public List<Node> children = new List<Node>();
         public int value;
         public int minValue;
