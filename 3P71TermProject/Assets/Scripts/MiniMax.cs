@@ -10,14 +10,16 @@ public class MiniMax : MonoBehaviour
 
     private Node root;
 
+    private int counter=0;
+
 
     // Start is called before the first frame update
     void Start()
     {
 //        Debug.Log("startnum"+root.children.Count);
         root = CreateTree(depth);
-        Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,root ,true));
-        Debug.Log(root.children[1].children[1].value);
+        Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,root ,true, -1000000, 1000000));
+        Debug.Log("alpha-beta counter: "+counter);
     }
 
     // Update is called once per frame
@@ -44,7 +46,6 @@ public class MiniMax : MonoBehaviour
                 Node child = new Node();
                 child.value = depth*10;
                 node.children.Add(child);
-            //node.Attach(node, depth*2);
             childrenNodes(depth-1, node.children[i]);
 
             }
@@ -60,8 +61,9 @@ public class MiniMax : MonoBehaviour
     //maximizig - true = choose higher
     //minimizing = xhoose lower
 
-    private int MiniMaxAlgorithm(int depth, Node position, bool maximizingPlayer)
+    private int MiniMaxAlgorithm(int depth, Node position, bool maximizingPlayer, int alpha, int beta)
     { 
+        counter++;
         if (depth == 0)
         {
             return position.value;
@@ -70,20 +72,36 @@ public class MiniMax : MonoBehaviour
         if (maximizingPlayer)
         {
             position.maxValue = -100000000;
+            position.alpha = alpha;
+            position.beta = beta;
             foreach (var node in position.children) 
                 {
-                    int eval = MiniMaxAlgorithm(depth-1,node ,false);
+                    int eval = MiniMaxAlgorithm(depth-1,node ,false, position.alpha, position.beta);
                     position.maxValue = Mathf.Max(position.maxValue, eval);
+                    position.alpha = Mathf.Max(position.alpha, eval);
+
+                    if(position.beta <= position.alpha)
+                    {
+                        break;
+                    }
                 }
             return position.maxValue;
         }
         else
         {
             position.minValue = 100000000;
+            position.alpha = alpha;
+            position.beta = beta;
             foreach (var node in position.children) 
                 {
-                    int eval = MiniMaxAlgorithm(depth-1,node ,false);
+                    int eval = MiniMaxAlgorithm(depth-1,node ,false, position.alpha, position.beta);
                     position.minValue = Mathf.Min(position.minValue, eval);
+                    position.beta = Mathf.Min(position.beta, eval);
+
+                    if(position.beta <= position.alpha)
+                    {
+                        break;
+                    }
                 }
             return position.minValue;
         }
@@ -99,19 +117,7 @@ public class Node
         public int value;
         public int minValue;
         public int maxValue;
+        public int alpha;
+        public int beta;
         
-        //public Node()
-        //{
-        //    SetChildren(children);
-        //}
-
-        public void Attach(Node child, int value)
-        {
-            children.Add(child);
-            child.value = value;
-            //Debug.Log("added 54");
-           // child._parent = this;
-        }
-
-
     }
