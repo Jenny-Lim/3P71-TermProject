@@ -53,7 +53,11 @@ public class Piece : MonoBehaviour
 
             canMove[xPosition,yPosition + 1] = true;
 
-            //capturing is toggled on when theres a piece in range
+            //capturing is toggled on when theres a piece in range (see below)
+
+            //if (Board.board[xPosition + 1][yPosition + 1]!=null)
+            // then capture == true
+
             //if (capture)
             //{
                 //canMove[xPosition + 1][yPosition + 1] = true;
