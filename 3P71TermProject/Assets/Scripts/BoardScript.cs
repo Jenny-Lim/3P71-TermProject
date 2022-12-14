@@ -75,5 +75,10 @@ public class BoardScript : MonoBehaviour
         //if !pieceSelected.isBlack
         //then if pieceSelected.yPosition == 0
         //promote
+
+        //if king is in any index of canMove that == true of opposing piece
+        //check
+
+        //if spaces between king and rook is clear, king can move two spaces closer to rook and rook can jump 1 spot over king // castling
     }
 }

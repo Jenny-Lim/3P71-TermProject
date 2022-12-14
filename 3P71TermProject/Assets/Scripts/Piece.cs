@@ -163,6 +163,7 @@ public class Piece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //if type==king && isTaken
+        //then checkmate + game over
     }
 }
