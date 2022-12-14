@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
+    private int value; // value of the piece
+    private bool isTaken; // if its taken
 
-    int value; // value of the piece
-    bool isTaken; // if its taken
-    bool isBlack; // if its our (Ais)
-    int xPosition;
-    int yPosition;
-    string type;
+    [SerializeField]
+    private bool isBlack; // if its our (Ais)
 
-    public Piece(int value, bool isTaken, bool isBlack, int xPosition, int yPosition)
-    {
-        this.value = value;
-        this.isTaken = isTaken;
-        this.isBlack = isBlack;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-    }
+    // set these in board script
+    private int xPosition;
+    private int yPosition;
 
-    public bool[,] MoveCheck() // must also check if there's a piece on the board, need reference to the actual board
+    [SerializeField]
+    private string type; // definable type ?
+
+
+//public Piece(int value, bool isTaken, bool isBlack, int xPosition, int yPosition)
+//{
+//this.value = value;
+//this.isTaken = isTaken;
+//this.isBlack = isBlack;
+//this.xPosition = xPosition;
+//this.yPosition = yPosition;
+//}
+
+// doesnt account for out of bounds yet
+public bool[,] MoveCheck() // must also check if there's a piece on the board, need reference to the actual board
     {
         bool[,] canMove = new bool[8, 8];
     for (int i = 0; i<canMove.Length; i++)
@@ -105,6 +112,34 @@ public class Piece : MonoBehaviour
             canMove[xPosition - 1,yPosition - 1] = true;
         }
         return canMove;
+    }
+
+    void getValue()
+    {
+        if (type == "pawn")
+        {
+            value = 100;
+        }
+        if (type == "knight")
+        {
+            value = 300;
+                }
+        if (type == "bishop")
+        {
+            value = 300;
+                }
+        if (type == "rook")
+        {
+            value = 500;
+                }
+        if (type == "queen")
+        {
+            value = 900;
+                }
+        if (type == "king")
+        {
+            value = int.MaxValue;
+                }
     }
 
     // Start is called before the first frame update
