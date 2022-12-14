@@ -26,6 +26,7 @@ public class BoardScript : MonoBehaviour
     end of comment        */
 
     // Start is called before the first frame update
+
     void Start()
     {
         // pogchamp
