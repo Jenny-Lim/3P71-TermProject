@@ -21,13 +21,13 @@ public class Piece : MonoBehaviour
         this.yPosition = yPosition;
     }
 
-    public bool[][] MoveCheck() // must also check if there's a piece on the board, need reference to the actual board
+    public bool[,] MoveCheck() // must also check if there's a piece on the board, need reference to the actual board
     {
-        bool[][] canMove = new bool[8][];
+        bool[,] canMove = new bool[8, 8];
     for (int i = 0; i<canMove.Length; i++)
         {
             for (int j = 0; j<canMove.Length; j++) {
-                canMove[i][j] = false;
+                canMove[i,j] = false;
             }
         }
 
@@ -36,7 +36,7 @@ public class Piece : MonoBehaviour
 
             // some check if its the pawn's first move
 
-            canMove[xPosition][yPosition + 1] = true;
+            canMove[xPosition,yPosition + 1] = true;
 
             //capturing is toggled on when theres a piece in range
             //if (capture)
@@ -47,62 +47,62 @@ public class Piece : MonoBehaviour
 
         if (type == "knight") // knights move in an 'L'
         {
-            canMove[xPosition + 2][yPosition + 1] = true;
-            canMove[xPosition + 1][yPosition + 2] = true;
+            canMove[xPosition + 2,yPosition + 1] = true;
+            canMove[xPosition + 1,yPosition + 2] = true;
 
-            canMove[xPosition - 2][yPosition - 1] = true;
-            canMove[xPosition - 1][yPosition - 2] = true;
+            canMove[xPosition - 2,yPosition - 1] = true;
+            canMove[xPosition - 1,yPosition - 2] = true;
         }
         if (type == "bishop") // bishops move in diagonals
         {
             for (int i = 0; i < canMove.Length; i++) {
-                canMove[xPosition + i][yPosition + i] = true;
-                canMove[xPosition - i][yPosition - i] = true;
+                canMove[xPosition + i,yPosition + i] = true;
+                canMove[xPosition - i,yPosition - i] = true;
             }
         }
         if (type == "rook") // rooks move in a cross
         {
             for (int i = 0; i < canMove.Length; i++)
             {
-                canMove[xPosition][yPosition + i] = true;
-                canMove[xPosition + i][yPosition] = true;
+                canMove[xPosition,yPosition + i] = true;
+                canMove[xPosition + i,yPosition] = true;
 
-                canMove[xPosition][yPosition - i] = true;
-                canMove[xPosition - i][yPosition] = true;
+                canMove[xPosition,yPosition - i] = true;
+                canMove[xPosition - i,yPosition] = true;
             }
         }
         if (type == "queen") // can probably condense this
         {
             // does what king does
-            canMove[xPosition][yPosition + 1] = true;
-            canMove[xPosition + 1][yPosition] = true;
-            canMove[xPosition + 1][yPosition + 1] = true;
+            canMove[xPosition,yPosition + 1] = true;
+            canMove[xPosition + 1,yPosition] = true;
+            canMove[xPosition + 1,yPosition + 1] = true;
 
-            canMove[xPosition][yPosition - 1] = true;
-            canMove[xPosition - 1][yPosition] = true;
-            canMove[xPosition - 1][yPosition - 1] = true;
+            canMove[xPosition,yPosition - 1] = true;
+            canMove[xPosition - 1,yPosition] = true;
+            canMove[xPosition - 1,yPosition - 1] = true;
 
             for (int i = 0; i < canMove.Length; i++)
             {
-                canMove[xPosition + i][yPosition + i] = true;
-                canMove[xPosition - i][yPosition - i] = true; // also does what bishop does
+                canMove[xPosition + i,yPosition + i] = true;
+                canMove[xPosition - i,yPosition - i] = true; // also does what bishop does
 
-                canMove[xPosition][yPosition + i] = true;
-                canMove[xPosition + i][yPosition] = true;
+                canMove[xPosition,yPosition + i] = true;
+                canMove[xPosition + i,yPosition] = true;
 
-                canMove[xPosition][yPosition - i] = true;
-                canMove[xPosition - i][yPosition] = true; // alsoalso does what rook does
+                canMove[xPosition,yPosition - i] = true;
+                canMove[xPosition - i,yPosition] = true; // alsoalso does what rook does
             }
         }
         if (type == "king") // king can only move around them
         {
-            canMove[xPosition][yPosition + 1] = true;
-            canMove[xPosition + 1][yPosition] = true;
-            canMove[xPosition + 1][yPosition + 1] = true;
+            canMove[xPosition,yPosition + 1] = true;
+            canMove[xPosition + 1,yPosition] = true;
+            canMove[xPosition + 1,yPosition + 1] = true;
 
-            canMove[xPosition][yPosition - 1] = true;
-            canMove[xPosition - 1][yPosition] = true;
-            canMove[xPosition - 1][yPosition - 1] = true;
+            canMove[xPosition,yPosition - 1] = true;
+            canMove[xPosition - 1,yPosition] = true;
+            canMove[xPosition - 1,yPosition - 1] = true;
         }
         return canMove;
     }
