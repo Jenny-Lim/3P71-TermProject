@@ -67,5 +67,13 @@ public class BoardScript : MonoBehaviour
         // get input from user = someOtherSpot (compare with canMove, set as coordinate)
         //if board[pieceSelected.xPosition, pieceSelected.yPosition] != null
         // board[pieceSelected.xPosition, pieceSelected.yPosition].isTaken = true;
+
+        //if pieceSelected.isBlack
+        //then if pieceSelected.yPosition == 7
+        //promote
+
+        //if !pieceSelected.isBlack
+        //then if pieceSelected.yPosition == 0
+        //promote
     }
 }
