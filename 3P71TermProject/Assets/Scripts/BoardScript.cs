@@ -7,15 +7,6 @@ public class BoardScript : MonoBehaviour
 
     private Piece[,] board = new Piece[8,8];
 
-        // initializing AI pieces
-
-    //Piece pawn = new Piece(100, false, true, i, j, pawn);
-    //Piece rook = new Piece(500, false, true, i, j, rook);
-    //Piece knight = new Piece(300, false, true, i, j, knight);
-    //Piece bishop = new Piece(300, false, true, i, j, bishop);
-    //Piece queen = new Piece(900, false, true, i, j, queen);
-    //Piece king = new Piece(int.MaxValue, false, true, i, j, king);
-
     // Start is called before the first frame update
 
     void Start()
@@ -32,23 +23,41 @@ public class BoardScript : MonoBehaviour
         
     }
 
-    void makeBoard() // have a list of pieces to start with ?
+    void makeBoard() // bruh
     {
+
+        // ai pieces
+
+        board[0, 0] = new Piece(false, true, 0, 0, "rook");
+        board[0, 1] = new Piece(false, true, 0, 1, "knight");
+        board[0, 2] = new Piece(false, true, 0, 2, "bishop");
+        board[0, 3] = new Piece(false, true, 0, 3, "queen");
+        board[0, 4] = new Piece(false, true, 0, 4, "king");
+        board[0, 2] = new Piece(false, true, 0, 2, "bishop");
+        board[0, 1] = new Piece(false, true, 0, 1, "knight");
+        board[0, 0] = new Piece(false, true, 0, 0, "rook");
+
         for (int i = 0; i < board.Length; i++)
         {
-            //if (piece.type = "pawn")
-            //{
-            //    if (piece.isBlack)
-            //    {
-            //        board[1, i] = piece;
-            //    }
-            //    if (!piece.isBlack)
-            //    {
-            //        board[6, i] = piece;
-            //    }
-            //}
-
-            //etc
+            board[1, i] = new Piece(false, true, 1, i, "pawn");
         }
+
+
+        // player pieces
+
+        for (int i = 0; i < board.Length; i++)
+        {
+            board[6, i] = new Piece(false, false, 6, i, "pawn");
+        }
+
+        board[7, 0] = new Piece(false, false, 0, 0, "rook");
+        board[7, 1] = new Piece(false, false, 0, 1, "knight");
+        board[7, 2] = new Piece(false, false, 0, 2, "bishop");
+        board[7, 3] = new Piece(false, false, 0, 3, "queen");
+        board[7, 4] = new Piece(false, false, 0, 4, "king");
+        board[7, 2] = new Piece(false, false, 0, 2, "bishop");
+        board[7, 1] = new Piece(false, false, 0, 1, "knight");
+        board[7, 0] = new Piece(false, false, 0, 0, "rook");
+
     }
 }

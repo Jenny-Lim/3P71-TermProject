@@ -2,33 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//public enum pieceType
+//{
+//    pawn,
+//    knight,
+//    bishop,
+//    rook,
+//    queen,
+//    king
+//}
+
 public class Piece : MonoBehaviour
 {
     private int value; // value of the piece
     private bool isTaken; // if its taken
 
-    [SerializeField]
     private bool isBlack; // if its our (Ais)
 
     // set these in board script
     private int xPosition;
     private int yPosition;
 
-    [SerializeField]
-    private string type; // definable type ?
+    private string type;
 
 
-//public Piece(int value, bool isTaken, bool isBlack, int xPosition, int yPosition)
-//{
-//this.value = value;
-//this.isTaken = isTaken;
-//this.isBlack = isBlack;
-//this.xPosition = xPosition;
-//this.yPosition = yPosition;
-//}
+    public Piece(bool isTaken, bool isBlack, int xPosition, int yPosition, string type)
+    {
+        this.isTaken = isTaken;
+        this.isBlack = isBlack;
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
+        this.type = type;
+    }
 
-// doesnt account for out of bounds yet
-public bool[,] MoveCheck() // must also check if there's a piece on the board, need reference to the actual board
+    // doesnt account for out of bounds yet
+    public bool[,] MoveCheck() // must also check if there's a piece on the board, need reference to the actual board
     {
         bool[,] canMove = new bool[8, 8];
     for (int i = 0; i<canMove.Length; i++)
