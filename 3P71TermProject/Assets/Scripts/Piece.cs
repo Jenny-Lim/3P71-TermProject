@@ -25,6 +25,8 @@ public class Piece : MonoBehaviour
 
     public string type;
 
+    public bool[,] canMove;
+
 
     public Piece(bool isTaken, bool isBlack, int xPosition, int yPosition, string type)
     {
