@@ -73,10 +73,10 @@ public class BoardScript : MonoBehaviour
         // board[someOtherSpot.xPosition, someOtherSpot.yPosition].isTaken = true;
 
         //if (pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == board.Length-1){
-        //promote}
+        //pieceselected.promote()
 
         //if (!pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == 0){
-        //promote}
+        //pieceselected.promote()
 
         //go through all opposing pieces, and within the piece go through all moves
         //if king is in any index of canMove that == true of opposing piece
@@ -85,9 +85,10 @@ public class BoardScript : MonoBehaviour
         //if spaces between king and rook is clear, king can move two spaces closer to rook and rook can jump 1 spot over king // castling
     } // MovePiece
 
-    void BoardEval()
-    {
 
+
+    void BoardEval() // maybe we pick a better heuristic
+    {
         int eval = 0;
 
         for(int i = 0; i<board.Length; i++)

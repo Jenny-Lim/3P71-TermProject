@@ -27,6 +27,8 @@ public class Piece : MonoBehaviour
 
     public bool[,] canMove;
 
+    bool pawnHasMoved = false;
+
 
     public Piece(bool isTaken, bool isBlack, int xPosition, int yPosition, string type)
     {
@@ -51,23 +53,19 @@ public class Piece : MonoBehaviour
         if (type == "pawn") // pawns only move forward one tile at a time
         {
 
-            // some check if its the pawn's first move
-            // canMove[xPosition,yPosition+2] = true;
+            // check if its the pawn's first move
+            if (!pawnHasMoved)
+            {
+                canMove[xPosition, yPosition + 2] = true;
+            }
 
             if (yPosition+1 < canMove.Length)
             {
                 canMove[xPosition, yPosition + 1] = true;
             }
 
-            //capturing is toggled on when theres a piece in range (see below), have this in board script
+            pawnHasMoved = true;
 
-            //if (Board.board[xPosition + 1][yPosition + 1]!=null)
-            // then capture == true
-
-            //if (capture)
-            //{
-                //canMove[xPosition + 1][yPosition + 1] = true;
-            //}
         } // pawn
 
 
@@ -251,6 +249,12 @@ public class Piece : MonoBehaviour
             value = 0; // no point in assigning val to king ?
                 }
     } // GetValue
+
+    void Promote()
+    {
+        //get user to choose new piece type
+        //type = "newType";
+    }
 
     // Start is called before the first frame update
     void Start()
