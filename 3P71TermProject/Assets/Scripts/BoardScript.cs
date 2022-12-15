@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoardScript : MonoBehaviour
 {
 
-    private Piece[,] board = new Piece[8,8];
+    public Piece[,] board = new Piece[8,8];
 
     // Start is called before the first frame update
 
@@ -14,13 +14,13 @@ public class BoardScript : MonoBehaviour
         // pogchamp
         //test line 2 
 
-        //MakeBoard();
+        MakeBoard();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+                //Debug.Log("Board Value is"+BoardEval());
     }
 
     void MakeBoard() // bruh
@@ -28,16 +28,26 @@ public class BoardScript : MonoBehaviour
 
         // ai pieces
 
+        for(int i = 0;i<8;i++)
+        {
+            for(int j = 0;j<8;j++)
+            {
+                board[i,j] = new Piece(false, false, i, j, "empty");
+            }
+        }
+
+        Debug.Log("BOARDLENGTY"+board.Length);
+
         board[0, 0] = new Piece(false, true, 0, 0, "rook");
         board[0, 1] = new Piece(false, true, 0, 1, "knight");
         board[0, 2] = new Piece(false, true, 0, 2, "bishop");
         board[0, 3] = new Piece(false, true, 0, 3, "queen");
         board[0, 4] = new Piece(false, true, 0, 4, "king");
-        board[0, 2] = new Piece(false, true, 0, 2, "bishop");
-        board[0, 1] = new Piece(false, true, 0, 1, "knight");
-        board[0, 0] = new Piece(false, true, 0, 0, "rook");
+        board[0, 5] = new Piece(false, true, 0, 5, "bishop");
+        board[0, 6] = new Piece(false, true, 0, 6, "knight");
+        board[0, 7] = new Piece(false, true, 0, 7, "rook");
 
-        for (int i = 0; i < board.Length; i++)
+        for (int i = 0; i < 8; i++)
         {
             board[1, i] = new Piece(false, true, 1, i, "pawn");
         }
@@ -45,7 +55,7 @@ public class BoardScript : MonoBehaviour
 
         // player pieces
 
-        for (int i = 0; i < board.Length; i++)
+        for (int i = 0; i < 8; i++)
         {
             board[6, i] = new Piece(false, false, 6, i, "pawn");
         }
@@ -55,11 +65,11 @@ public class BoardScript : MonoBehaviour
         board[7, 2] = new Piece(false, false, 7, 2, "bishop");
         board[7, 3] = new Piece(false, false, 7, 3, "queen");
         board[7, 4] = new Piece(false, false, 7, 4, "king");
-        board[7, 2] = new Piece(false, false, 7, 2, "bishop");
-        board[7, 1] = new Piece(false, false, 7, 1, "knight");
-        board[7, 0] = new Piece(false, false, 7, 0, "rook");
+        board[7, 5] = new Piece(false, false, 7, 5, "bishop");
+        board[7, 6] = new Piece(false, false, 7, 6, "knight");
+        board[7, 7] = new Piece(false, false, 7, 7, "rook");
 
-    } // MakeBoard
+    }// MakeBoard
 
     void MovePiece() // board can have reference to the pieces,
     {
@@ -87,13 +97,13 @@ public class BoardScript : MonoBehaviour
 
 
 
-    void BoardEval() // maybe we pick a better heuristic
+    int BoardEval() // maybe we pick a better heuristic
     {
         int eval = 0;
 
-        for(int i = 0; i<board.Length; i++)
+        for(int i = 0; i<8; i++)
         {
-            for (int j = 0; j<board.Length; j++)
+            for (int j = 0; j<8; j++)
             {
                 if (board[i, j].isBlack) // ai - maximizing score
                 {
@@ -105,5 +115,6 @@ public class BoardScript : MonoBehaviour
                 }
             }
         }
+        return eval;
     } // BoardEval
 }

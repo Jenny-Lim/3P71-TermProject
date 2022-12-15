@@ -37,15 +37,16 @@ public class Piece : MonoBehaviour
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.type = type;
+        GetValue();
     }
 
 
     public bool[,] MoveCheck() // must also check if there's a piece on the board
     {
         bool[,] canMove = new bool[8, 8];
-    for (int i = 0; i<canMove.Length; i++)
+    for (int i = 0; i<8; i++)
         {
-            for (int j = 0; j<canMove.Length; j++) {
+            for (int j = 0; j<8; j++) {
                 canMove[i,j] = false;
             }
         }
@@ -56,12 +57,12 @@ public class Piece : MonoBehaviour
             // check if its the pawn's first move
             if (!pawnHasMoved)
             {
-                canMove[xPosition, yPosition + 2] = true;
+                canMove[xPosition+2, yPosition] = true;
             }
 
-            if (yPosition+1 < canMove.Length)
+            if (yPosition+1 < 8)
             {
-                canMove[xPosition, yPosition + 1] = true;
+                canMove[xPosition+1, yPosition] = true;
             }
 
             pawnHasMoved = true;
@@ -71,12 +72,12 @@ public class Piece : MonoBehaviour
 
         if (type == "knight") // knights move in an 'L'
         {
-            if (xPosition+2 < canMove.Length && yPosition+1 < canMove.Length)
+            if (xPosition+2 < 8 && yPosition+1 < 8)
             {
                 canMove[xPosition + 2, yPosition + 1] = true;
             }
 
-            if (xPosition+1 < canMove.Length && yPosition+2 < canMove.Length) {
+            if (xPosition+1 < 8 && yPosition+2 < 8) {
                 canMove[xPosition + 1,yPosition + 2] = true;
                 }
 
@@ -93,8 +94,8 @@ public class Piece : MonoBehaviour
 
         if (type == "bishop") // bishops move in diagonals
         {
-            for (int i = 0; i < canMove.Length; i++) {
-                if (xPosition + i < canMove.Length && yPosition + i < canMove.Length)
+            for (int i = 0; i < 8; i++) {
+                if (xPosition + i < 8 && yPosition + i < 8)
                 {
                     canMove[xPosition + i, yPosition + i] = true;
                 }
@@ -108,13 +109,13 @@ public class Piece : MonoBehaviour
 
         if (type == "rook") // rooks move in a cross
         {
-            for (int i = 0; i < canMove.Length; i++)
+            for (int i = 0; i < 8; i++)
             {
-                if (yPosition + i < canMove.Length)
+                if (yPosition + i < 8)
                 {
                     canMove[xPosition, yPosition + i] = true;
                 }
-                if (xPosition + i < canMove.Length) {
+                if (xPosition + i < 8) {
                     canMove[xPosition + i, yPosition] = true;
                 }
 
@@ -131,15 +132,15 @@ public class Piece : MonoBehaviour
         if (type == "queen") // can probably condense this
         {
             // does what king does
-            if (yPosition + 1 < canMove.Length)
+            if (yPosition + 1 < 8)
             {
                 canMove[xPosition, yPosition + 1] = true;
             }
-            if (xPosition + 1 < canMove.Length)
+            if (xPosition + 1 < 8)
             {
                 canMove[xPosition + 1, yPosition] = true;
             }
-            if (xPosition + 1 < canMove.Length && yPosition + 1 < canMove.Length)
+            if (xPosition + 1 < 8 && yPosition + 1 < 8)
             {
                 canMove[xPosition + 1, yPosition + 1] = true;
             }
@@ -157,9 +158,9 @@ public class Piece : MonoBehaviour
             }
 
 
-            for (int i = 0; i < canMove.Length; i++)
+            for (int i = 0; i < 8; i++)
             {
-                if (xPosition + i < canMove.Length && yPosition + i < canMove.Length)
+                if (xPosition + i < 8 && yPosition + i < 8)
                 {
                     canMove[xPosition + i, yPosition + i] = true;
                 }
@@ -169,11 +170,11 @@ public class Piece : MonoBehaviour
                 } // also does what bishop does
 
 
-                if (yPosition + i < canMove.Length)
+                if (yPosition + i < 8)
                 {
                     canMove[xPosition, yPosition + i] = true;
                 }
-                if (xPosition + i < canMove.Length)
+                if (xPosition + i < 8)
                 {
                     canMove[xPosition + i, yPosition] = true;
                 }
@@ -192,14 +193,15 @@ public class Piece : MonoBehaviour
 
         if (type == "king") // king can only move around them
         {
-            if (yPosition + 1 < canMove.Length) {
+            Debug.Log("king: YPOS: "+xPosition+ " XPOS: "+yPosition);
+            if (yPosition + 1 < 8) {
                 canMove[xPosition, yPosition + 1] = true;
             }
-            if (xPosition + 1 < canMove.Length)
+            if (xPosition + 1 < 8)
             {
                 canMove[xPosition + 1,yPosition] = true;
             }
-            if (xPosition + 1 < canMove.Length && yPosition + 1 < canMove.Length)
+            if (xPosition + 1 < 8 && yPosition + 1 < 8)
             {
                 canMove[xPosition + 1,yPosition + 1] = true;
             }

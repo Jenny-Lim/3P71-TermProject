@@ -5,16 +5,44 @@ using UnityEngine;
 public class MiniMax : MonoBehaviour
 {
     [SerializeField]
-    private int depth = 3;
+    private int depth;
 
 
     private Node root;
 
     [SerializeField]
-    private List<GameObject> blackPieces;
+    private GameObject blackPawn;
+    [SerializeField]
+    private GameObject blackRook;
+    [SerializeField]
+    private GameObject blackKnight;
+    [SerializeField]
+    private GameObject blackBishop;
+    [SerializeField]
+    private GameObject blackQueen;
+    [SerializeField]
+    private GameObject blackKing;
+    [SerializeField]
+    private GameObject whitePawn;
+    [SerializeField]
+    private GameObject whiteRook;
+    [SerializeField]
+    private GameObject whiteKnight;
+    [SerializeField]
+    private GameObject whiteBishop;
+    [SerializeField]
+    private GameObject whiteQueen;
+    [SerializeField]
+    private GameObject whiteKing;
 
     [SerializeField]
-    private List<GameObject> whitePieces;
+    private BoardScript boardManager;
+
+    //[SerializeField]
+    //private List<GameObject> blackPieces;
+
+    //[SerializeField]
+    //private List<GameObject> whitePieces;
 
     private int counter=0;
 
@@ -22,152 +50,333 @@ public class MiniMax : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-//        Debug.Log("startnum"+root.children.Count);
-        root = CreateTree(depth);
-        Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,root ,true, -1000000, 1000000));
-        Debug.Log("alpha-beta counter: "+counter);
-        boardArray();
+            updateBoard();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown("space")) //testing running algo more than once
         {
-            Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,root ,true, -1000000, 1000000));
+        root = CreateTree(depth); //create tree of board states
+        Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,depth ,root ,false, -1000000, 1000000)); //run minimax
+        Debug.Log("alpha-beta counter: "+counter); //count number of 
+        updateBoard();
+        //boardArray();//get 2d array from board state - not necesary
         }
-        
+        //Debug.Log(boardManager.board[0,0].value);
     } 
 
-    private Node CreateTree(int depth)
+    private Node CreateTree(int depth)//creates tree from node
     {
-        Node tree = new Node();
-
-        childrenNodes(depth, tree);
-    
-        return tree;
-    }
-
-    private char[][] boardArray()
-    {
-        char[][] board = new char[8][];
-        for(int i = 0;i<8;i++)
+        Node tree = new Node(); //default node
+        for(int i = 0; i<8;i++)
         {
-            board[i] = new char[8];
-        }
-
-                for(int i = 0;i<8;i++)
-                {
-                    for(int j = 0;j<8;j++)
-                    {
-                        board[i][j] = '_';
-                    }
-                }
-
-        foreach (var piece in whitePieces) 
-        {
-            board[(int)(piece.transform.position.y)*(-1)][(int)(piece.transform.position.x)] = 'P';
-        }
-        foreach (var piece in blackPieces) 
-        {
-            board[(int)(piece.transform.position.y)*(-1)][(int)(piece.transform.position.x)] = 'p';
-        }
-
-                for(int i = 0;i<8;i++)
-                {
-                    for(int j = 0;j<8;j++)
-                    {
-                        Debug.Log(board[i][j]);
-                    }
-                }
-
-        whitePieces[6].transform.position = new Vector3(3f, -4f, 0f);
-        
-        return board;
-    }
-
-    private void childrenNodes(int depth, Node node)
-    {
-        if(depth>0)
-        {
-            for(int i =0;i<3;i++)
+            for(int j = 0;j<8;j++)
             {
-                Node child = new Node();
-                child.value = depth*10;
-                node.children.Add(child);
-            childrenNodes(depth-1, node.children[i]);
-
+                tree.boardState[i,j] = new Piece(boardManager.board[i,j].isTaken, boardManager.board[i,j].isBlack, boardManager.board[i,j].xPosition, boardManager.board[i,j].yPosition, boardManager.board[i,j].type);
             }
         }
-       // Debug.Log(depth+"DEPTHTEST");
+
+        childrenNodes(depth, tree, true); //create children with depth specified
+    
+        return tree;//return built tree
     }
 
-    private void BoardStates()
+    void updateBoard()
     {
+        //update manager with algorithm board
+        if(root != null)
+        {
+            for(int i = 0; i<8;i++)
+            {
+                for(int j = 0;j<8;j++)
+                {
+                    boardManager.board[i,j] = new Piece(root.boardState[i,j].isTaken, root.boardState[i,j].isBlack, root.boardState[i,j].xPosition, root.boardState[i,j].yPosition,root.boardState[i,j].type);
+                }
+            }
+        }
+
+        GameObject[] pieces = GameObject.FindGameObjectsWithTag("BoardPiece");
+        foreach(GameObject piece in pieces)
+        {
+            Destroy(piece);
+        }
+
+
+        for(int i = 0; i<8;i++)
+        {
+            for(int j = 0;j<8;j++)
+            {
+                if(boardManager.board[i,j].isBlack)
+                {
+                    if (boardManager.board[i,j].type == "pawn")
+                    {
+                        Instantiate(blackPawn, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "knight")
+                    {
+                        Instantiate(blackKnight, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "bishop")
+                    {
+                        Instantiate(blackBishop, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "rook")
+                    {
+                        Instantiate(blackRook, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "queen")
+                    {
+                        Instantiate(blackQueen, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "king")
+                    {
+                        Instantiate(blackKing, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                }
+                else
+                {
+                    if (boardManager.board[i,j].type == "pawn")
+                    {
+                        Instantiate(whitePawn, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "knight")
+                    {
+                        Instantiate(whiteKnight, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "bishop")
+                    {
+                        Instantiate(whiteBishop, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "rook")
+                    {
+                        Instantiate(whiteRook, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "queen")
+                    {
+                        Instantiate(whiteQueen, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+                    if (boardManager.board[i,j].type == "king")
+                    {
+                        Instantiate(whiteKing, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                    }
+
+                }
+            }
+        }
 
     }
+
+    private void childrenNodes(int depth, Node node, bool isAITurn) //create nodes
+    {   
+        int arrayCount = 0;
+        if(depth>0)//if not at bottom depth
+        {
+            if(isAITurn) //if black makes moves
+            {
+                for(int i = 0;i<8;i++)//go through node piece array
+                {
+                    for(int j = 0;j<8;j++)
+                    {
+                        if(node.boardState[i,j].isBlack && node.boardState[i,j].type != "empty")//if a piece is found that is black
+                        {
+                            node.boardState[i,j].canMove = node.boardState[i,j].MoveCheck();//get matrix of possible moves for piece
+                            for(int p = 0;p<8;p++)//go through matrix of future moves - PL for move matrix - IJ for original spot
+                            {
+                                for(int l = 0;l<8;l++)
+                                {
+                                    if(node.boardState[i,j].canMove[p,l])//if spot found
+                                    {
+                                        Node child = new Node(); //create default node
+                                        for(int z = 0;z<8;z++)//initialize child piece array
+                                        {
+                                            for(int x=0;x<8;x++)
+                                            {
+                                                child.boardState[z,x] = new Piece(node.boardState[z,x].isTaken, node.boardState[z,x].isBlack, node.boardState[z,x].xPosition, node.boardState[z,x].yPosition, node.boardState[z,x].type);
+                                            }
+                                        }
+                                        Piece tempPiece = new Piece(child.boardState[p,l].isTaken, child.boardState[p,l].isBlack, child.boardState[p,l].xPosition, child.boardState[p,l].yPosition, child.boardState[p,l].type);
+                                        child.boardState[p,l] = new Piece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type);
+                                        child.boardState[i,j] = new Piece(false, false, i, j, "empty");
+                                        child.value = depth*10; //insert value into node - change to board state valueation
+                                        node.children.Add(child);//insert node into child of this node
+                                        childrenNodes(depth-1, node.children[arrayCount], !isAITurn);//create child node from child just made
+                                        arrayCount++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+           else //if white makes moves - gotta work on
+            {
+                for(int i = 0;i<8;i++)//go through node piece array
+                {
+                    for(int j = 0;j<8;j++)
+                    {
+                        if(node.boardState[i,j].isBlack && node.boardState[i,j].type != "empty")//if a piece is found that is black
+                        {
+                            node.boardState[i,j].canMove = node.boardState[i,j].MoveCheck();//get matrix of possible moves for piece
+                            for(int p = 0;p<8;p++)//go through matrix of future moves - PL for move matrix - IJ for original spot
+                            {
+                                for(int l = 0;l<8;l++)
+                                {
+                                    if(node.boardState[i,j].canMove[p,l])//if spot found
+                                    {
+                                        Node child = new Node(); //create default node
+                                        for(int z = 0;z<8;z++)//initialize child piece array
+                                        {
+                                            for(int x=0;x<8;x++)
+                                            {
+                                                child.boardState[z,x] = new Piece(node.boardState[z,x].isTaken, node.boardState[z,x].isBlack, node.boardState[z,x].xPosition, node.boardState[z,x].yPosition, node.boardState[z,x].type);
+                                            }
+                                        }
+                                        Piece tempPiece = new Piece(child.boardState[p,l].isTaken, child.boardState[p,l].isBlack, child.boardState[p,l].xPosition, child.boardState[p,l].yPosition, child.boardState[p,l].type);
+                                        child.boardState[p,l] = new Piece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type);
+                                        child.boardState[i,j] = new Piece(false, false, i, j, "empty");
+                                        child.value = depth*10; //insert value into node - change to board state valueation
+                                        node.children.Add(child);//insert node into child of this node
+                                        childrenNodes(depth-1, node.children[arrayCount], !isAITurn);//create child node from child just made
+                                        arrayCount++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+        public int BoardEval(Node node) // maybe we pick a better heuristic
+    {
+        int eval = 0;
+
+        for(int i = 0; i<8; i++)
+        {
+            for (int j = 0; j<8; j++)
+            {
+                if (node.boardState[i, j].isBlack) // ai - maximizing score
+                {
+                    eval = eval + node.boardState[i, j].value;
+                }
+                if (!node.boardState[i, j].isBlack) // player - minimizing score
+                {
+                    eval = eval - node.boardState[i, j].value;
+                }
+            }
+        }
+        return eval;
+    } // BoardEval
+
+        // copied to minimax so can be used in algo with other piece arrays beside main
 
     //maximizig - true = choose higher
     //minimizing = xhoose lower
 
-    private int MiniMaxAlgorithm(int depth, Node position, bool maximizingPlayer, int alpha, int beta)
+    private int MiniMaxAlgorithm(int depth,int trueDepth, Node position, bool maximizingPlayer, int alpha, int beta)//minimax algo
     { 
-        counter++;
-        if (depth == 0)
+        int stateTracker = 0;
+        counter++;//tracks for alpha beta pruning
+        if (depth == 0)//if reach bottom depth
         {
-            return position.value;
+            return BoardEval(position);//return value of node
         }
  
-        if (maximizingPlayer)
+        if (maximizingPlayer)//best value for AI
         {
-            position.maxValue = -100000000;
-            position.alpha = alpha;
-            position.beta = beta;
-            foreach (var node in position.children) 
+            position.maxValue = -100000000;//set max to negative infinity
+            //position.alpha = alpha;//set alpha to stored alpha
+            //position.beta = beta;//set beta to stored beta
+            for (int i = 0;i<position.children.Count;i++) //for each child that node has
                 {
-                    int eval = MiniMaxAlgorithm(depth-1,node ,false, position.alpha, position.beta);
-                    position.maxValue = Mathf.Max(position.maxValue, eval);
-                    position.alpha = Mathf.Max(position.alpha, eval);
+                    int eval = MiniMaxAlgorithm(depth-1, trueDepth, position.children[i] ,false, position.alpha, position.beta); //get value by running algo on childrens children
+                    if(eval>position.maxValue)
+                    {
+                        position.maxValue = eval;
+                        stateTracker = i;
+                    }
+                    if(eval>position.alpha)
+                    {
+                        position.alpha = eval;
+                    }
+                   // position.maxValue = Mathf.Max(position.maxValue, eval); //get best value by comparing max value to child value
+                    //position.alpha = Mathf.Max(position.alpha, eval);//get alpha by comparing stored alpha to value
 
-                    if(position.beta <= position.alpha)
+                    if(position.beta <= position.alpha) //if beta is less or equal then loop can stop and will prune
                     {
                         break;
                     }
                 }
-            return position.maxValue;
+
+            if(depth == trueDepth)
+            {
+                for(int i = 0; i<8;i++)
+                {
+                    for(int j = 0;j<8;j++)
+                    {
+                        root.boardState[i,j] = new Piece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].xPosition, position.children[stateTracker].boardState[i,j].yPosition,position.children[stateTracker].boardState[i,j].type);
+                    }
+                }
+            }
+
+            return position.maxValue; //return best value
         }
-        else
+        else //best value for Player
         {
-            position.minValue = 100000000;
-            position.alpha = alpha;
-            position.beta = beta;
-            foreach (var node in position.children) 
+            position.minValue = 100000000;//set min to infinity, worst value for min as default
+            //position.alpha = alpha;//set alpha and beta to store values
+            //position.beta = beta;
+            for(int i = 0;i<position.children.Count;i++) //each child of node
                 {
-                    int eval = MiniMaxAlgorithm(depth-1,node ,false, position.alpha, position.beta);
-                    position.minValue = Mathf.Min(position.minValue, eval);
-                    position.beta = Mathf.Min(position.beta, eval);
+                    int eval = MiniMaxAlgorithm(depth-1, trueDepth, position.children[i] ,true, position.alpha, position.beta);//children children until depth 0
+                    if(eval<position.minValue)
+                    {
+                        position.minValue = eval;
+                        stateTracker = i;
+                    }
+                    if(eval<position.beta)
+                    {
+                        position.beta = eval;
+                    }
+                    //position.minValue = Mathf.Min(position.minValue, eval);
+                    //position.beta = Mathf.Min(position.beta, eval);
 
                     if(position.beta <= position.alpha)
                     {
                         break;
                     }
                 }
-            return position.minValue;
+
+            if(depth == trueDepth)
+            {
+                for(int i = 0; i<8;i++)
+                {
+                    for(int j = 0;j<8;j++)
+                    {
+                        root.boardState[i,j] = new Piece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].xPosition, position.children[stateTracker].boardState[i,j].yPosition,position.children[stateTracker].boardState[i,j].type);
+                    }
+                }
+            }
+
+            return position.minValue; //return best value
         }
 
     }
 
 }
 
-public class Node
+public class Node //data stored in each node in tree
     {
 
-        public char[][] board = new char[8][];
-        public List<Node> children = new List<Node>();
-        public int value;
-        public int minValue;
-        public int maxValue;
-        public int alpha;
-        public int beta;
+        public Piece[,] boardState = new Piece[8,8];
+        public List<Node> children = new List<Node>();//children nodes
+        public int value;//value - retrieved from analyzing board state
+        public int minValue;//minimum value - best value for AI
+        public int maxValue;//maximum value - best value for player
+        public int alpha = -1000000;//alpha value - for pruning
+        public int beta = 1000000;//beta value - for pruning
+        public string test;
         
     }
