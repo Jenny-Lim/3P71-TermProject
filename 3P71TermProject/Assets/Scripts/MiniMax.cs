@@ -50,7 +50,7 @@ public class MiniMax : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-            updateBoard();
+            updateBoard(true);
     }
 
     void Update()
@@ -60,7 +60,7 @@ public class MiniMax : MonoBehaviour
         root = CreateTree(depth); //create tree of board states
         Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,depth ,root ,true, -1000000, 1000000)); //run minimax
         Debug.Log("alpha-beta counter: "+counter); //count number of 
-        updateBoard();
+        updateBoard(false);
         //boardArray();//get 2d array from board state - not necesary
         }
         //Debug.Log(boardManager.board[0,0].value);
@@ -73,7 +73,7 @@ public class MiniMax : MonoBehaviour
         {
             for(int j = 0;j<8;j++)
             {
-                tree.boardState[i,j] = new Piece(boardManager.board[i,j].isTaken, boardManager.board[i,j].isBlack, boardManager.board[i,j].xPosition, boardManager.board[i,j].yPosition, boardManager.board[i,j].type);
+                tree.boardState[i,j] = new Piece(boardManager.board[i,j].isTaken, boardManager.board[i,j].isBlack, boardManager.board[i,j].yPosition, boardManager.board[i,j].xPosition, boardManager.board[i,j].type);
             }
         }
 
@@ -82,22 +82,30 @@ public class MiniMax : MonoBehaviour
         return tree;//return built tree
     }
 
-    void updateBoard()
+    public void updateBoard(bool playermove)
     {
+        Debug.Log("BOARD UPDATED");
         //update manager with algorithm board
-        if(root != null)
+        if(!playermove)
         {
             for(int i = 0; i<8;i++)
             {
                 for(int j = 0;j<8;j++)
                 {
-                    boardManager.board[i,j] = new Piece(root.boardState[i,j].isTaken, root.boardState[i,j].isBlack, root.boardState[i,j].xPosition, root.boardState[i,j].yPosition,root.boardState[i,j].type);
+                    boardManager.board[i,j] = new Piece(root.boardState[i,j].isTaken, root.boardState[i,j].isBlack, root.boardState[i,j].yPosition, root.boardState[i,j].xPosition,root.boardState[i,j].type);
                 }
             }
         }
 
         GameObject[] pieces = GameObject.FindGameObjectsWithTag("BoardPiece");
         foreach(GameObject piece in pieces)
+        {
+            Destroy(piece);
+        }
+
+        
+        GameObject[] playerPieces = GameObject.FindGameObjectsWithTag("PlayerPiece");
+        foreach(GameObject piece in playerPieces)
         {
             Destroy(piece);
         }
@@ -190,12 +198,12 @@ public class MiniMax : MonoBehaviour
                                         Node child = new Node(); //create default node
                                         for(int z = 0;z<8;z++)//initialize child piece array
                                         {
-                                            for(int x=0;x<8;x++)
+                                            for(int x=0;x<8;x++)//copy board state to child
                                             {
                                                 child.boardState[z,x] = new Piece(node.boardState[z,x].isTaken, node.boardState[z,x].isBlack, z, x, node.boardState[z,x].type);
                                             }
                                         }
-                                        //Piece tempPiece = new Piece(child.boardState[p,l].isTaken, child.boardState[p,l].isBlack, child.boardState[p,l].yPosition, child.boardState[p,l].xPosition, child.boardState[p,l].type);
+                                        //move piece to spot
                                         child.boardState[p,l].updatePiece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type); //= new Piece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type);
                                         child.boardState[i,j].updatePiece(false, false, i, j, "empty");
                                         child.value = depth*10; //insert value into node - change to board state valueation
@@ -232,7 +240,6 @@ public class MiniMax : MonoBehaviour
                                                 child.boardState[z,x] = new Piece(node.boardState[z,x].isTaken, node.boardState[z,x].isBlack, node.boardState[z,x].xPosition, node.boardState[z,x].yPosition, node.boardState[z,x].type);
                                             }
                                         }
-                                        Piece tempPiece = new Piece(child.boardState[p,l].isTaken, child.boardState[p,l].isBlack, child.boardState[p,l].xPosition, child.boardState[p,l].yPosition, child.boardState[p,l].type);
                                         child.boardState[p,l].updatePiece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type);
                                         child.boardState[i,j].updatePiece(false, false, i, j, "empty");
                                         child.value = depth*10; //insert value into node - change to board state valueation
@@ -247,6 +254,11 @@ public class MiniMax : MonoBehaviour
                 }
             }
         }
+    }
+
+        public bool[,] possibleMoves()
+    {
+return null;
     }
 
         public int BoardEval(Node node) // maybe we pick a better heuristic
@@ -319,7 +331,7 @@ public class MiniMax : MonoBehaviour
                     {
                         //root.boardState[i,j].updatePiece(position.boardState[i,j].isTaken, position.boardState[i,j].isBlack, position.boardState[i,j].yPosition, position.boardState[i,j].xPosition,position.boardState[i,j].type);
 
-                        root.boardState[i,j].updatePiece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].xPosition, position.children[stateTracker].boardState[i,j].yPosition,position.children[stateTracker].boardState[i,j].type);
+                        root.boardState[i,j].updatePiece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].yPosition, position.children[stateTracker].boardState[i,j].xPosition,position.children[stateTracker].boardState[i,j].type);
                     }
                 }
             }
@@ -359,7 +371,7 @@ public class MiniMax : MonoBehaviour
                 {
                     for(int j = 0;j<8;j++)
                     {
-                        root.boardState[i,j].updatePiece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].xPosition, position.children[stateTracker].boardState[i,j].yPosition,position.children[stateTracker].boardState[i,j].type);
+                        root.boardState[i,j].updatePiece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].yPosition, position.children[stateTracker].boardState[i,j].xPosition,position.children[stateTracker].boardState[i,j].type);
                     }
                 }
             }

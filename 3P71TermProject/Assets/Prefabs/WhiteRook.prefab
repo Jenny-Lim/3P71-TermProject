@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2256062668599414492}
   m_Layer: 0
   m_Name: WhiteRook
-  m_TagString: BoardPiece
+  m_TagString: PlayerPiece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

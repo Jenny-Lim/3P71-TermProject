@@ -65,6 +65,189 @@ public class Piece : MonoBehaviour
         {
 
             // check if its the pawn's first move
+            if (yPosition == 6)
+            {
+                canMove[yPosition-2, xPosition] = true;
+            }
+
+            if (yPosition-1 > -1)
+            {
+                canMove[yPosition-1, xPosition] = true;
+            }
+
+            pawnHasMoved = true;
+
+        } // pawn
+
+
+        if (type == "knight") // knights move in an 'L'
+        {
+            if (xPosition+2 < 8 && yPosition+1 < 8)
+            {
+                canMove[yPosition + 1, xPosition + 2] = true;
+            }
+
+            if (xPosition+1 < 8 && yPosition+2 < 8) 
+            {
+                canMove[yPosition + 2,xPosition + 1] = true;
+            }
+
+            if (xPosition - 2 > -1 && yPosition - 1 > -1)
+            {
+                canMove[yPosition - 1, xPosition - 2] = true;
+            }
+            if (xPosition - 1 > -1 && yPosition - 2 > -1)
+            {
+                canMove[yPosition - 2, xPosition - 1] = true;
+            }
+        } // knight
+
+
+        if (type == "bishop") // bishops move in diagonals
+        {
+            for (int i = 0; i < 8; i++) {
+                if (xPosition + i < 8 && yPosition + i < 8)
+                {
+                    canMove[yPosition + i, xPosition + i] = true;
+                }
+                if (xPosition - i > -1 && yPosition - i > -1)
+                {
+                    canMove[yPosition - i, xPosition - i] = true;
+                }
+            }
+        } // bishop
+
+
+        if (type == "rook") // rooks move in a cross
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (yPosition + i < 8)
+                {
+                    canMove[yPosition + i, xPosition] = true;
+                }
+                if (xPosition + i < 8) {
+                    canMove[yPosition, xPosition + i] = true;
+                }
+
+                if (yPosition - i > -1) {
+                    canMove[yPosition - i, xPosition] = true;
+                }
+                if (xPosition - i > -1) {
+                    canMove[yPosition, xPosition - i] = true;
+                }
+            }
+        } // rook
+
+
+        if (type == "queen") // can probably condense this
+        {
+            // does what king does
+            if (yPosition + 1 < 8)
+            {
+                canMove[yPosition + 1, xPosition] = true;
+            }
+            if (xPosition + 1 < 8)
+            {
+                canMove[yPosition, xPosition + 1] = true;
+            }
+            if (xPosition + 1 < 8 && yPosition + 1 < 8)
+            {
+                canMove[yPosition + 1, xPosition + 1] = true;
+            }
+            if (yPosition - 1 > -1)
+            {
+                canMove[yPosition - 1, xPosition] = true;
+            }
+            if (xPosition - 1 > -1)
+            {
+                canMove[yPosition, xPosition-1] = true;
+            }
+            if (xPosition - 1 > -1 && yPosition - 1 > -1)
+            {
+                canMove[yPosition - 1, xPosition - 1] = true;
+            }
+
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (xPosition + i < 8 && yPosition + i < 8)
+                {
+                    canMove[yPosition + i, xPosition + i] = true;
+                }
+                if (xPosition - i > -1 && yPosition - i > -1)
+                {
+                    canMove[yPosition - i, xPosition - i] = true;
+                } // also does what bishop does
+
+
+                if (yPosition + i < 8)
+                {
+                    canMove[yPosition + i, xPosition] = true;
+                }
+                if (xPosition + i < 8)
+                {
+                    canMove[yPosition, xPosition + i] = true;
+                }
+
+                if (yPosition - i > -1)
+                {
+                    canMove[yPosition - i, xPosition] = true;
+                }
+                if (xPosition - i > -1)
+                {
+                    canMove[yPosition, xPosition - i] = true;
+                } // alsoalso does what rook does
+            }
+        } // queen
+
+
+        if (type == "king") // king can only move around them
+        {
+            Debug.Log("king: YPOS: "+xPosition+ " XPOS: "+yPosition);
+            if (yPosition + 1 < 8) {
+                canMove[yPosition + 1, xPosition] = true;
+            }
+            if (xPosition + 1 < 8)
+            {
+                canMove[yPosition,xPosition + 1] = true;
+            }
+            if (xPosition + 1 < 8 && yPosition + 1 < 8)
+            {
+                canMove[yPosition + 1,xPosition + 1] = true;
+            }
+            if (yPosition - 1 > -1)
+            {
+                canMove[yPosition - 1, xPosition] = true;
+            }
+            if (xPosition - 1 > -1)
+            {
+                canMove[yPosition, xPosition - 1] = true;
+            }
+            if (xPosition - 1 > -1 && yPosition - 1 > -1)
+            {
+                canMove[yPosition - 1, xPosition - 1] = true;
+            }
+        } // king
+
+
+        return canMove;
+    } // MoveCheck
+
+    public bool[,] WhiteMoveCheck()
+ {
+        bool[,] canMove = new bool[8, 8];
+    for (int i = 0; i<8; i++)
+        {
+            for (int j = 0; j<8; j++) {
+                canMove[i,j] = false;
+            }
+        }
+
+        if (type == "pawn") // pawns only move forward one tile at a time
+        {
+
+            // check if its the pawn's first move
             if (yPosition == 1)
             {
                 canMove[yPosition+2, xPosition] = true;
@@ -233,20 +416,6 @@ public class Piece : MonoBehaviour
 
         return canMove;
     } // MoveCheck
-
-    public bool[,] WhiteMoveCheck()
-    {
-    bool[,] canMove = new bool[8, 8];
-    for (int i = 0; i<8; i++)
-        {
-            for (int j = 0; j<8; j++) {
-                canMove[i,j] = false;
-            }
-        }
-
-        canMove[5,0] = true;
-        return canMove;
-    }
 
 
     void GetValue()

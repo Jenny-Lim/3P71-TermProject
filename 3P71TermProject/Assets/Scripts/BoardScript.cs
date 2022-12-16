@@ -7,6 +7,21 @@ public class BoardScript : MonoBehaviour
 
     public Piece[,] board = new Piece[8,8];
 
+    private Ray cameraRay;
+
+    [SerializeField]
+    private Camera cam;
+
+    [SerializeField]
+    private MiniMax miniMaxScript;
+
+    private RaycastHit hit;
+
+    private int playerYPos;
+    private int playerXPos;
+    private bool pieceChosen = false;
+
+
     // Start is called before the first frame update
 
     void Start()
@@ -20,13 +35,48 @@ public class BoardScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-                //Debug.Log("Board Value is"+BoardEval());
+
+        Vector3 mousePos = Input.mousePosition; 
+        Vector3 worldPos=Camera.main.ScreenToWorldPoint(mousePos);  
+        //Debug.Log(worldPos);   
+        cameraRay = cam.ScreenPointToRay(mousePos); 
+
+        if (Physics.Raycast (cameraRay, out hit)) 
+        {
+            if (hit.collider) 
+            {
+                if(Input.GetMouseButtonDown(0))
+                {
+                    if(hit.collider.tag == "PlayerPiece")
+                    {
+                    Debug.Log(hit.collider.gameObject);
+                    Debug.Log("XPOS: "+hit.collider.gameObject.transform.position.x);
+                    playerXPos = (int)hit.collider.gameObject.transform.position.x;
+                    Debug.Log("YPOS: "+hit.collider.gameObject.transform.position.y);
+                    playerYPos = -1 * (int)hit.collider.gameObject.transform.position.y;
+                    pieceChosen = true;
+                    }
+                    else if(hit.collider.tag != "PlayerPiece" && pieceChosen)
+                    {
+                        int moveX = (int)hit.collider.gameObject.transform.position.x;
+                        int moveY = -1 * (int)hit.collider.gameObject.transform.position.y;
+                        Debug.Log("MOVE TO X: "+moveX+" Y: "+moveY);
+                        board[moveY, moveX].updatePiece(board[playerYPos,playerXPos].isTaken, board[playerYPos,playerXPos].isBlack, moveY, moveX, board[playerYPos,playerXPos].type);
+                        board[playerYPos, playerXPos].updatePiece(false, false, playerYPos, playerXPos, "Empty");
+                        pieceChosen = false;
+                        miniMaxScript.updateBoard(true);
+                    }
+
+                }
+            }
+        }
+
     }
 
     void MakeBoard() // bruh
     {
 
-        // ai pieces
+        // ai pieces - black
 
         for(int i = 0;i<8;i++)
         {
@@ -92,6 +142,7 @@ public class BoardScript : MonoBehaviour
 
         //if spaces between king and rook is clear, king can move two spaces closer to rook and rook can jump 1 spot over king // castling
     } // MovePiece
+
 
 
 
