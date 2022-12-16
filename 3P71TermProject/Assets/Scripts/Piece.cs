@@ -25,7 +25,7 @@ public class Piece : MonoBehaviour
 
     public string type;
 
-    public bool[,] canMove;
+    public bool[,] canMove; // also wait why is this here again
 
     bool pawnHasMoved = false;
 
@@ -51,7 +51,7 @@ public class Piece : MonoBehaviour
     }
 
 
-    public bool[,] BlackMoveCheck() // stop setting canmove to be true once an enemy piece is in the way
+    public bool[,] BlackMoveCheck() // stop setting canmove to be true once an enemy piece is in the way --  if a board spot isnt null, then you can't move to the spots above it -- need reference to board, or move this into board and have pieces refer to this
     {
         bool[,] canMove = new bool[8, 8];
     for (int i = 0; i<8; i++)
@@ -230,6 +230,10 @@ public class Piece : MonoBehaviour
             }
         } // king
 
+        // 2d for loop for every spot on the board
+        // if board spot isnt null
+        // for loop through yPos' for that spot and above
+        // canMove = false;
 
         return canMove;
     } // MoveCheck
@@ -442,13 +446,13 @@ public class Piece : MonoBehaviour
                 }
         if (type == "king")
         {
-            value = 0; // no point in assigning val to king ?
+            value = 0; // no point in assigning val to king ? -- wait actually it does matter, because pieces do want to aim for the king
                 }
     } // GetValue
 
-    void Promote(string type)
+    void Promote(string newType)
     {
-        //type = "newType";
+        //type = newType;
     }
 
     // Start is called before the first frame update
