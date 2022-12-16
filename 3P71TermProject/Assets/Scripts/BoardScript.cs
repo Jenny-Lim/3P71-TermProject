@@ -131,10 +131,12 @@ public class BoardScript : MonoBehaviour
         // board[someOtherSpot.xPosition, someOtherSpot.yPosition].isTaken = true;
 
         //if (pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == board.Length-1){
-        //pieceselected.promote()
+        //get input
+        //pieceselected.promote(input)
 
         //if (!pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == 0){
-        //pieceselected.promote()
+        //get input
+        //pieceselected.promote(input)
 
         //go through all opposing pieces, and within the piece go through all moves
         //if king is in any index of canMove that == true of opposing piece

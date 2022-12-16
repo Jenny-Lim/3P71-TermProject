@@ -51,7 +51,7 @@ public class Piece : MonoBehaviour
     }
 
 
-    public bool[,] BlackMoveCheck() // must also check if there's a piece on the board
+    public bool[,] BlackMoveCheck() // stop setting canmove to be true once an enemy piece is in the way
     {
         bool[,] canMove = new bool[8, 8];
     for (int i = 0; i<8; i++)
@@ -446,9 +446,8 @@ public class Piece : MonoBehaviour
                 }
     } // GetValue
 
-    void Promote()
+    void Promote(string type)
     {
-        //get user to choose new piece type
         //type = "newType";
     }
 
