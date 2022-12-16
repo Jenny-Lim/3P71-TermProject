@@ -30,7 +30,17 @@ public class Piece : MonoBehaviour
     bool pawnHasMoved = false;
 
 
-    public Piece(bool isTaken, bool isBlack, int xPosition, int yPosition, string type)
+    public Piece(bool isTaken, bool isBlack, int yPosition, int xPosition, string type)
+    {
+        this.isTaken = isTaken;
+        this.isBlack = isBlack;
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
+        this.type = type;
+        GetValue();
+    }
+
+    public void updatePiece(bool isTaken, bool isBlack, int yPosition, int xPosition, string type)
     {
         this.isTaken = isTaken;
         this.isBlack = isBlack;
@@ -41,7 +51,7 @@ public class Piece : MonoBehaviour
     }
 
 
-    public bool[,] MoveCheck() // must also check if there's a piece on the board
+    public bool[,] BlackMoveCheck() // must also check if there's a piece on the board
     {
         bool[,] canMove = new bool[8, 8];
     for (int i = 0; i<8; i++)
@@ -55,14 +65,14 @@ public class Piece : MonoBehaviour
         {
 
             // check if its the pawn's first move
-            if (!pawnHasMoved)
+            if (yPosition == 1)
             {
-                canMove[xPosition+2, yPosition] = true;
+                canMove[yPosition+2, xPosition] = true;
             }
 
             if (yPosition+1 < 8)
             {
-                canMove[xPosition+1, yPosition] = true;
+                canMove[yPosition+1, xPosition] = true;
             }
 
             pawnHasMoved = true;
@@ -74,20 +84,21 @@ public class Piece : MonoBehaviour
         {
             if (xPosition+2 < 8 && yPosition+1 < 8)
             {
-                canMove[xPosition + 2, yPosition + 1] = true;
+                canMove[yPosition + 1, xPosition + 2] = true;
             }
 
-            if (xPosition+1 < 8 && yPosition+2 < 8) {
-                canMove[xPosition + 1,yPosition + 2] = true;
-                }
+            if (xPosition+1 < 8 && yPosition+2 < 8) 
+            {
+                canMove[yPosition + 2,xPosition + 1] = true;
+            }
 
             if (xPosition - 2 > -1 && yPosition - 1 > -1)
             {
-                canMove[xPosition - 2, yPosition - 1] = true;
+                canMove[yPosition - 1, xPosition - 2] = true;
             }
             if (xPosition - 1 > -1 && yPosition - 2 > -1)
             {
-                canMove[xPosition - 1, yPosition - 2] = true;
+                canMove[yPosition - 2, xPosition - 1] = true;
             }
         } // knight
 
@@ -97,11 +108,11 @@ public class Piece : MonoBehaviour
             for (int i = 0; i < 8; i++) {
                 if (xPosition + i < 8 && yPosition + i < 8)
                 {
-                    canMove[xPosition + i, yPosition + i] = true;
+                    canMove[yPosition + i, xPosition + i] = true;
                 }
                 if (xPosition - i > -1 && yPosition - i > -1)
                 {
-                    canMove[xPosition - i, yPosition - i] = true;
+                    canMove[yPosition - i, xPosition - i] = true;
                 }
             }
         } // bishop
@@ -113,17 +124,17 @@ public class Piece : MonoBehaviour
             {
                 if (yPosition + i < 8)
                 {
-                    canMove[xPosition, yPosition + i] = true;
+                    canMove[yPosition + i, xPosition] = true;
                 }
                 if (xPosition + i < 8) {
-                    canMove[xPosition + i, yPosition] = true;
+                    canMove[yPosition, xPosition + i] = true;
                 }
 
                 if (yPosition - i > -1) {
-                    canMove[xPosition, yPosition - i] = true;
+                    canMove[yPosition - i, xPosition] = true;
                 }
                 if (xPosition - i > -1) {
-                    canMove[xPosition - i, yPosition] = true;
+                    canMove[yPosition, xPosition - i] = true;
                 }
             }
         } // rook
@@ -134,27 +145,27 @@ public class Piece : MonoBehaviour
             // does what king does
             if (yPosition + 1 < 8)
             {
-                canMove[xPosition, yPosition + 1] = true;
+                canMove[yPosition + 1, xPosition] = true;
             }
             if (xPosition + 1 < 8)
             {
-                canMove[xPosition + 1, yPosition] = true;
+                canMove[yPosition, xPosition + 1] = true;
             }
             if (xPosition + 1 < 8 && yPosition + 1 < 8)
             {
-                canMove[xPosition + 1, yPosition + 1] = true;
+                canMove[yPosition + 1, xPosition + 1] = true;
             }
             if (yPosition - 1 > -1)
             {
-                canMove[xPosition, yPosition - 1] = true;
+                canMove[yPosition - 1, xPosition] = true;
             }
             if (xPosition - 1 > -1)
             {
-                canMove[xPosition - 1, yPosition] = true;
+                canMove[yPosition, xPosition-1] = true;
             }
             if (xPosition - 1 > -1 && yPosition - 1 > -1)
             {
-                canMove[xPosition - 1, yPosition - 1] = true;
+                canMove[yPosition - 1, xPosition - 1] = true;
             }
 
 
@@ -162,30 +173,30 @@ public class Piece : MonoBehaviour
             {
                 if (xPosition + i < 8 && yPosition + i < 8)
                 {
-                    canMove[xPosition + i, yPosition + i] = true;
+                    canMove[yPosition + i, xPosition + i] = true;
                 }
                 if (xPosition - i > -1 && yPosition - i > -1)
                 {
-                    canMove[xPosition - i, yPosition - i] = true;
+                    canMove[yPosition - i, xPosition - i] = true;
                 } // also does what bishop does
 
 
                 if (yPosition + i < 8)
                 {
-                    canMove[xPosition, yPosition + i] = true;
+                    canMove[yPosition + i, xPosition] = true;
                 }
                 if (xPosition + i < 8)
                 {
-                    canMove[xPosition + i, yPosition] = true;
+                    canMove[yPosition, xPosition + i] = true;
                 }
 
                 if (yPosition - i > -1)
                 {
-                    canMove[xPosition, yPosition - i] = true;
+                    canMove[yPosition - i, xPosition] = true;
                 }
                 if (xPosition - i > -1)
                 {
-                    canMove[xPosition - i, yPosition] = true;
+                    canMove[yPosition, xPosition - i] = true;
                 } // alsoalso does what rook does
             }
         } // queen
@@ -195,33 +206,47 @@ public class Piece : MonoBehaviour
         {
             Debug.Log("king: YPOS: "+xPosition+ " XPOS: "+yPosition);
             if (yPosition + 1 < 8) {
-                canMove[xPosition, yPosition + 1] = true;
+                canMove[yPosition + 1, xPosition] = true;
             }
             if (xPosition + 1 < 8)
             {
-                canMove[xPosition + 1,yPosition] = true;
+                canMove[yPosition,xPosition + 1] = true;
             }
             if (xPosition + 1 < 8 && yPosition + 1 < 8)
             {
-                canMove[xPosition + 1,yPosition + 1] = true;
+                canMove[yPosition + 1,xPosition + 1] = true;
             }
             if (yPosition - 1 > -1)
             {
-                canMove[xPosition, yPosition - 1] = true;
+                canMove[yPosition - 1, xPosition] = true;
             }
             if (xPosition - 1 > -1)
             {
-                canMove[xPosition - 1, yPosition] = true;
+                canMove[yPosition, xPosition - 1] = true;
             }
             if (xPosition - 1 > -1 && yPosition - 1 > -1)
             {
-                canMove[xPosition - 1, yPosition - 1] = true;
+                canMove[yPosition - 1, xPosition - 1] = true;
             }
         } // king
 
 
         return canMove;
     } // MoveCheck
+
+    public bool[,] WhiteMoveCheck()
+    {
+    bool[,] canMove = new bool[8, 8];
+    for (int i = 0; i<8; i++)
+        {
+            for (int j = 0; j<8; j++) {
+                canMove[i,j] = false;
+            }
+        }
+
+        canMove[5,0] = true;
+        return canMove;
+    }
 
 
     void GetValue()

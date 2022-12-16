@@ -36,8 +36,6 @@ public class BoardScript : MonoBehaviour
             }
         }
 
-        Debug.Log("BOARDLENGTY"+board.Length);
-
         board[0, 0] = new Piece(false, true, 0, 0, "rook");
         board[0, 1] = new Piece(false, true, 0, 1, "knight");
         board[0, 2] = new Piece(false, true, 0, 2, "bishop");

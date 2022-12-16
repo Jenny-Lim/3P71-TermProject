@@ -58,7 +58,7 @@ public class MiniMax : MonoBehaviour
         if (Input.GetKeyDown("space")) //testing running algo more than once
         {
         root = CreateTree(depth); //create tree of board states
-        Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,depth ,root ,false, -1000000, 1000000)); //run minimax
+        Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,depth ,root ,true, -1000000, 1000000)); //run minimax
         Debug.Log("alpha-beta counter: "+counter); //count number of 
         updateBoard();
         //boardArray();//get 2d array from board state - not necesary
@@ -111,54 +111,54 @@ public class MiniMax : MonoBehaviour
                 {
                     if (boardManager.board[i,j].type == "pawn")
                     {
-                        Instantiate(blackPawn, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(blackPawn, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "knight")
                     {
-                        Instantiate(blackKnight, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(blackKnight, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "bishop")
                     {
-                        Instantiate(blackBishop, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(blackBishop, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "rook")
                     {
-                        Instantiate(blackRook, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(blackRook, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "queen")
                     {
-                        Instantiate(blackQueen, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(blackQueen, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "king")
                     {
-                        Instantiate(blackKing, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(blackKing, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                 }
                 else
                 {
                     if (boardManager.board[i,j].type == "pawn")
                     {
-                        Instantiate(whitePawn, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(whitePawn, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "knight")
                     {
-                        Instantiate(whiteKnight, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(whiteKnight, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "bishop")
                     {
-                        Instantiate(whiteBishop, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(whiteBishop, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "rook")
                     {
-                        Instantiate(whiteRook, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(whiteRook, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "queen")
                     {
-                        Instantiate(whiteQueen, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(whiteQueen, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
                     if (boardManager.board[i,j].type == "king")
                     {
-                        Instantiate(whiteKing, new Vector3(boardManager.board[i,j].yPosition, 0 - boardManager.board[i,j].xPosition, 0f), Quaternion.identity);
+                        Instantiate(whiteKing, new Vector3(boardManager.board[i,j].xPosition, 0 - boardManager.board[i,j].yPosition, 0f), Quaternion.identity);
                     }
 
                 }
@@ -180,7 +180,7 @@ public class MiniMax : MonoBehaviour
                     {
                         if(node.boardState[i,j].isBlack && node.boardState[i,j].type != "empty")//if a piece is found that is black
                         {
-                            node.boardState[i,j].canMove = node.boardState[i,j].MoveCheck();//get matrix of possible moves for piece
+                            node.boardState[i,j].canMove = node.boardState[i,j].BlackMoveCheck();//get matrix of possible moves for piece
                             for(int p = 0;p<8;p++)//go through matrix of future moves - PL for move matrix - IJ for original spot
                             {
                                 for(int l = 0;l<8;l++)
@@ -192,12 +192,12 @@ public class MiniMax : MonoBehaviour
                                         {
                                             for(int x=0;x<8;x++)
                                             {
-                                                child.boardState[z,x] = new Piece(node.boardState[z,x].isTaken, node.boardState[z,x].isBlack, node.boardState[z,x].xPosition, node.boardState[z,x].yPosition, node.boardState[z,x].type);
+                                                child.boardState[z,x] = new Piece(node.boardState[z,x].isTaken, node.boardState[z,x].isBlack, z, x, node.boardState[z,x].type);
                                             }
                                         }
-                                        Piece tempPiece = new Piece(child.boardState[p,l].isTaken, child.boardState[p,l].isBlack, child.boardState[p,l].xPosition, child.boardState[p,l].yPosition, child.boardState[p,l].type);
-                                        child.boardState[p,l] = new Piece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type);
-                                        child.boardState[i,j] = new Piece(false, false, i, j, "empty");
+                                        //Piece tempPiece = new Piece(child.boardState[p,l].isTaken, child.boardState[p,l].isBlack, child.boardState[p,l].yPosition, child.boardState[p,l].xPosition, child.boardState[p,l].type);
+                                        child.boardState[p,l].updatePiece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type); //= new Piece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type);
+                                        child.boardState[i,j].updatePiece(false, false, i, j, "empty");
                                         child.value = depth*10; //insert value into node - change to board state valueation
                                         node.children.Add(child);//insert node into child of this node
                                         childrenNodes(depth-1, node.children[arrayCount], !isAITurn);//create child node from child just made
@@ -217,14 +217,14 @@ public class MiniMax : MonoBehaviour
                     {
                         if(node.boardState[i,j].isBlack && node.boardState[i,j].type != "empty")//if a piece is found that is black
                         {
-                            node.boardState[i,j].canMove = node.boardState[i,j].MoveCheck();//get matrix of possible moves for piece
+                            node.boardState[i,j].canMove = node.boardState[i,j].WhiteMoveCheck();//get matrix of possible moves for piece
                             for(int p = 0;p<8;p++)//go through matrix of future moves - PL for move matrix - IJ for original spot
                             {
                                 for(int l = 0;l<8;l++)
                                 {
                                     if(node.boardState[i,j].canMove[p,l])//if spot found
                                     {
-                                        Node child = new Node(); //create default node
+                                        Node child = new Node();// = new Node(); //create default node
                                         for(int z = 0;z<8;z++)//initialize child piece array
                                         {
                                             for(int x=0;x<8;x++)
@@ -233,8 +233,8 @@ public class MiniMax : MonoBehaviour
                                             }
                                         }
                                         Piece tempPiece = new Piece(child.boardState[p,l].isTaken, child.boardState[p,l].isBlack, child.boardState[p,l].xPosition, child.boardState[p,l].yPosition, child.boardState[p,l].type);
-                                        child.boardState[p,l] = new Piece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type);
-                                        child.boardState[i,j] = new Piece(false, false, i, j, "empty");
+                                        child.boardState[p,l].updatePiece(child.boardState[i,j].isTaken, child.boardState[i,j].isBlack, p, l, child.boardState[i,j].type);
+                                        child.boardState[i,j].updatePiece(false, false, i, j, "empty");
                                         child.value = depth*10; //insert value into node - change to board state valueation
                                         node.children.Add(child);//insert node into child of this node
                                         childrenNodes(depth-1, node.children[arrayCount], !isAITurn);//create child node from child just made
@@ -312,11 +312,14 @@ public class MiniMax : MonoBehaviour
 
             if(depth == trueDepth)
             {
+                //Debug.Log("MOVE DATA: XPOS: "+position.children[stateTracker].xPosition+" YPOS: "+position.children[stateTracker].yPosition+" TYPE: "+position.children[stateTracker].type);
                 for(int i = 0; i<8;i++)
                 {
                     for(int j = 0;j<8;j++)
                     {
-                        root.boardState[i,j] = new Piece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].xPosition, position.children[stateTracker].boardState[i,j].yPosition,position.children[stateTracker].boardState[i,j].type);
+                        //root.boardState[i,j].updatePiece(position.boardState[i,j].isTaken, position.boardState[i,j].isBlack, position.boardState[i,j].yPosition, position.boardState[i,j].xPosition,position.boardState[i,j].type);
+
+                        root.boardState[i,j].updatePiece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].xPosition, position.children[stateTracker].boardState[i,j].yPosition,position.children[stateTracker].boardState[i,j].type);
                     }
                 }
             }
@@ -351,11 +354,12 @@ public class MiniMax : MonoBehaviour
 
             if(depth == trueDepth)
             {
+                //Debug.Log("MOVE DATA: XPOS: "+position.children[stateTracker].xPosition+" YPOS: "+position.children[stateTracker].yPosition+" TYPE: "+position.children[stateTracker].type);
                 for(int i = 0; i<8;i++)
                 {
                     for(int j = 0;j<8;j++)
                     {
-                        root.boardState[i,j] = new Piece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].xPosition, position.children[stateTracker].boardState[i,j].yPosition,position.children[stateTracker].boardState[i,j].type);
+                        root.boardState[i,j].updatePiece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].xPosition, position.children[stateTracker].boardState[i,j].yPosition,position.children[stateTracker].boardState[i,j].type);
                     }
                 }
             }
