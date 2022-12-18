@@ -381,7 +381,395 @@ return null;
 
     }
 
+    public bool[,] BlackMoveCheck(Piece p) // stop setting canmove to be true once an enemy piece is in the way --  if a board spot isnt null, then you can't move to the spots above it -- need reference to board, or move this into board and have pieces refer to this
+    {
+        bool[,] canMove = new bool[8, 8];
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                canMove[i, j] = false;
+            }
+        }
+
+        if (p.type == "pawn") // pawns only move forward one tile at a time
+        {
+
+            // check if its the pawn's first move
+            if (p.yPosition == 6)
+            {
+                canMove[p.yPosition - 2, p.xPosition] = true;
+            }
+
+            if (p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition] = true;
+            }
+
+            p.pawnHasMoved = true;
+
+        } // pawn
+
+
+        if (p.type == "knight") // knights move in an 'L'
+        {
+            if (p.xPosition + 2 < 8 && p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition + 2] = true;
+            }
+
+            if (p.xPosition + 1 < 8 && p.yPosition + 2 < 8)
+            {
+                canMove[p.yPosition + 2, p.xPosition + 1] = true;
+            }
+
+            if (p.xPosition - 2 > -1 && p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition - 2] = true;
+            }
+            if (p.xPosition - 1 > -1 && p.yPosition - 2 > -1)
+            {
+                canMove[p.yPosition - 2, p.xPosition - 1] = true;
+            }
+        } // knight
+
+
+        if (p.type == "bishop") // bishops move in diagonals
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (p.xPosition + i < 8 && p.yPosition + i < 8)
+                {
+                    canMove[p.yPosition + i, p.xPosition + i] = true;
+                }
+                if (p.xPosition - i > -1 && p.yPosition - i > -1)
+                {
+                    canMove[p.yPosition - i, p.xPosition - i] = true;
+                }
+            }
+        } // bishop
+
+
+        if (p.type == "rook") // rooks move in a cross
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (p.yPosition + i < 8)
+                {
+                    canMove[p.yPosition + i, p.xPosition] = true;
+                }
+                if (p.xPosition + i < 8)
+                {
+                    canMove[p.yPosition, p.xPosition + i] = true;
+                }
+
+                if (p.yPosition - i > -1)
+                {
+                    canMove[p.yPosition - i, p.xPosition] = true;
+                }
+                if (p.xPosition - i > -1)
+                {
+                    canMove[p.yPosition, p.xPosition - i] = true;
+                }
+            }
+        } // rook
+
+
+        if (p.type == "queen") // can probably condense this
+        {
+            // does what king does
+            if (p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition] = true;
+            }
+            if (p.xPosition + 1 < 8)
+            {
+                canMove[p.yPosition, p.xPosition + 1] = true;
+            }
+            if (p.xPosition + 1 < 8 && p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition + 1] = true;
+            }
+            if (p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition] = true;
+            }
+            if (p.xPosition - 1 > -1)
+            {
+                canMove[p.yPosition, p.xPosition - 1] = true;
+            }
+            if (p.xPosition - 1 > -1 && p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition - 1] = true;
+            }
+
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (p.xPosition + i < 8 && p.yPosition + i < 8)
+                {
+                    canMove[p.yPosition + i, p.xPosition + i] = true;
+                }
+                if (p.xPosition - i > -1 && p.yPosition - i > -1)
+                {
+                    canMove[p.yPosition - i, p.xPosition - i] = true;
+                } // also does what bishop does
+
+
+                if (p.yPosition + i < 8)
+                {
+                    canMove[p.yPosition + i, p.xPosition] = true;
+                }
+                if (p.xPosition + i < 8)
+                {
+                    canMove[p.yPosition, p.xPosition + i] = true;
+                }
+
+                if (p.yPosition - i > -1)
+                {
+                    canMove[p.yPosition - i, p.xPosition] = true;
+                }
+                if (p.xPosition - i > -1)
+                {
+                    canMove[p.yPosition, p.xPosition - i] = true;
+                } // alsoalso does what rook does
+            }
+        } // queen
+
+
+        if (p.type == "king") // king can only move around them
+        {
+            Debug.Log("king: YPOS: " + p.xPosition + " XPOS: " + p.yPosition);
+            if (p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition] = true;
+            }
+            if (p.xPosition + 1 < 8)
+            {
+                canMove[p.yPosition, p.xPosition + 1] = true;
+            }
+            if (p.xPosition + 1 < 8 && p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition + 1] = true;
+            }
+            if (p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition] = true;
+            }
+            if (p.xPosition - 1 > -1)
+            {
+                canMove[p.yPosition, p.xPosition - 1] = true;
+            }
+            if (p.xPosition - 1 > -1 && p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition - 1] = true;
+            }
+        } // king
+
+        // 2d for loop for every spot on the board
+        // if board spot isnt null
+        // for loop through yPos' for that spot and above
+        // canMove = false;
+
+        return canMove;
+    } // MoveCheck
+
+    public bool[,] WhiteMoveCheck(Piece p)
+    {
+        bool[,] canMove = new bool[8, 8];
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                canMove[i, j] = false;
+            }
+        }
+
+        if (p.type == "pawn") // pawns only move forward one tile at a time
+        {
+
+            // check if its the pawn's first move
+            if (p.yPosition == 6)
+            {
+                canMove[p.yPosition - 2, p.xPosition] = true;
+            }
+
+            if (p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition] = true;
+            }
+
+            p.pawnHasMoved = true;
+
+        } // pawn
+
+
+        if (p.type == "knight") // knights move in an 'L'
+        {
+            if (p.xPosition + 2 < 8 && p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition + 2] = true;
+            }
+
+            if (p.xPosition + 1 < 8 && p.yPosition + 2 < 8)
+            {
+                canMove[p.yPosition + 2, p.xPosition + 1] = true;
+            }
+
+            if (p.xPosition - 2 > -1 && p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition - 2] = true;
+            }
+            if (p.xPosition - 1 > -1 && p.yPosition - 2 > -1)
+            {
+                canMove[p.yPosition - 2, p.xPosition - 1] = true;
+            }
+        } // knight
+
+
+        if (p.type == "bishop") // bishops move in diagonals
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (p.xPosition + i < 8 && p.yPosition + i < 8)
+                {
+                    canMove[p.yPosition + i, p.xPosition + i] = true;
+                }
+                if (p.xPosition - i > -1 && p.yPosition - i > -1)
+                {
+                    canMove[p.yPosition - i, p.xPosition - i] = true;
+                }
+            }
+        } // bishop
+
+
+        if (p.type == "rook") // rooks move in a cross
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (p.yPosition + i < 8)
+                {
+                    canMove[p.yPosition + i, p.xPosition] = true;
+                }
+                if (p.xPosition + i < 8)
+                {
+                    canMove[p.yPosition, p.xPosition + i] = true;
+                }
+
+                if (p.yPosition - i > -1)
+                {
+                    canMove[p.yPosition - i, p.xPosition] = true;
+                }
+                if (p.xPosition - i > -1)
+                {
+                    canMove[p.yPosition, p.xPosition - i] = true;
+                }
+            }
+        } // rook
+
+
+        if (p.type == "queen") // can probably condense this
+        {
+            // does what king does
+            if (p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition] = true;
+            }
+            if (p.xPosition + 1 < 8)
+            {
+                canMove[p.yPosition, p.xPosition + 1] = true;
+            }
+            if (p.xPosition + 1 < 8 && p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition + 1] = true;
+            }
+            if (p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition] = true;
+            }
+            if (p.xPosition - 1 > -1)
+            {
+                canMove[p.yPosition, p.xPosition - 1] = true;
+            }
+            if (p.xPosition - 1 > -1 && p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition - 1] = true;
+            }
+
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (p.xPosition + i < 8 && p.yPosition + i < 8)
+                {
+                    canMove[p.yPosition + i, p.xPosition + i] = true;
+                }
+                if (p.xPosition - i > -1 && p.yPosition - i > -1)
+                {
+                    canMove[p.yPosition - i, p.xPosition - i] = true;
+                } // also does what bishop does
+
+
+                if (p.yPosition + i < 8)
+                {
+                    canMove[p.yPosition + i, p.xPosition] = true;
+                }
+                if (p.xPosition + i < 8)
+                {
+                    canMove[p.yPosition, p.xPosition + i] = true;
+                }
+
+                if (p.yPosition - i > -1)
+                {
+                    canMove[p.yPosition - i, p.xPosition] = true;
+                }
+                if (p.xPosition - i > -1)
+                {
+                    canMove[p.yPosition, p.xPosition - i] = true;
+                } // alsoalso does what rook does
+            }
+        } // queen
+
+
+        if (p.type == "king") // king can only move around them
+        {
+            Debug.Log("king: YPOS: " + p.xPosition + " XPOS: " + p.yPosition);
+            if (p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition] = true;
+            }
+            if (p.xPosition + 1 < 8)
+            {
+                canMove[p.yPosition, p.xPosition + 1] = true;
+            }
+            if (p.xPosition + 1 < 8 && p.yPosition + 1 < 8)
+            {
+                canMove[p.yPosition + 1, p.xPosition + 1] = true;
+            }
+            if (p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition] = true;
+            }
+            if (p.xPosition - 1 > -1)
+            {
+                canMove[p.yPosition, p.xPosition - 1] = true;
+            }
+            if (p.xPosition - 1 > -1 && p.yPosition - 1 > -1)
+            {
+                canMove[p.yPosition - 1, p.xPosition - 1] = true;
+            }
+        } // king
+
+        // 2d for loop for every spot on the board
+        // if board spot isnt null
+        // for loop through yPos' for that spot and above
+        // canMove = false;
+
+        return canMove;
+    } // MoveCheck
+
 }
+
+
 
 public class Node //data stored in each node in tree
     {
