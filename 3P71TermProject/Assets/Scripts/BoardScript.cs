@@ -123,9 +123,6 @@ public class BoardScript : MonoBehaviour
     {
         // get input from user = pieceselected
 
-        // if the piece is a pawn and if board[xPosition + 1][yPosition + 1]!=null
-        // pieceselected.canMove[xPosition + 1][yPosition + 1] = true;
-
         // get input from user = someOtherSpot -- chosen spot (compare with canMove, set new coordinates on pieceselected)
         //if board[someOtherSpot.xPosition, someOtherSpot.yPosition] != null
         // board[someOtherSpot.xPosition, someOtherSpot.yPosition].isTaken = true;

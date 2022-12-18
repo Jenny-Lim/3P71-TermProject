@@ -452,7 +452,7 @@ public class Piece : MonoBehaviour
 
     void Promote(string newType)
     {
-        //type = newType;
+        type = newType;
     }
 
     // Start is called before the first frame update
@@ -464,7 +464,13 @@ public class Piece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if type==king && isTaken
-        //then checkmate + game over
+        if (isTaken)
+        {
+            // disable the piece
+            if (type == "king")
+            {
+                //then checkmate + game over
+            }
+        }
     }
 }

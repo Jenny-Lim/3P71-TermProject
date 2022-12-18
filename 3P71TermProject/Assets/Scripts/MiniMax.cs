@@ -408,6 +408,11 @@ return null;
                 canMove[p.yPosition - 1, p.xPosition] = true;
             }
 
+            if (boardManager.board[p.xPosition + 1, p.yPosition + 1] != null)
+            {
+                canMove[p.xPosition + 1, p.yPosition + 1] = true; // can only move like this to capture
+            }
+
             p.pawnHasMoved = true;
 
         } // pawn
@@ -615,6 +620,10 @@ return null;
             {
                 canMove[p.yPosition - 1, p.xPosition] = true;
             }
+
+             if (boardManager.board[p.xPosition + 1, p.yPosition + 1]!=null){
+             canMove[p.xPosition + 1, p.yPosition + 1] = true; // can only move like this to capture
+                }
 
             p.pawnHasMoved = true;
 
