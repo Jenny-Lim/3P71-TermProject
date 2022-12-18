@@ -188,7 +188,8 @@ public class MiniMax : MonoBehaviour
                     {
                         if(node.boardState[i,j].isBlack && node.boardState[i,j].type != "empty")//if a piece is found that is black
                         {
-                            node.boardState[i,j].canMove = node.boardState[i,j].BlackMoveCheck();//get matrix of possible moves for piece
+                            node.boardState[i, j].canMove = BlackMoveCheck(node.boardState[i, j]);
+                //node.boardState[i,j].canMove = node.boardState[i,j].BlackMoveCheck();//get matrix of possible moves for piece
                             for(int p = 0;p<8;p++)//go through matrix of future moves - PL for move matrix - IJ for original spot
                             {
                                 for(int l = 0;l<8;l++)
@@ -225,7 +226,8 @@ public class MiniMax : MonoBehaviour
                     {
                         if(node.boardState[i,j].isBlack && node.boardState[i,j].type != "empty")//if a piece is found that is black
                         {
-                            node.boardState[i,j].canMove = node.boardState[i,j].WhiteMoveCheck();//get matrix of possible moves for piece
+                            node.boardState[i, j].canMove = BlackMoveCheck(node.boardState[i, j]);
+                            //node.boardState[i,j].canMove = node.boardState[i,j].WhiteMoveCheck();//get matrix of possible moves for piece
                             for(int p = 0;p<8;p++)//go through matrix of future moves - PL for move matrix - IJ for original spot
                             {
                                 for(int l = 0;l<8;l++)
