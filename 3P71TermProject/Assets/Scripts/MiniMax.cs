@@ -568,10 +568,25 @@ return null;
             }
         } // king
 
+
         // 2d for loop for every spot on the board
         // if board spot isnt null
         // for loop through yPos' for that spot and above
         // canMove = false;
+
+        for (int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if (boardManager.board[i, j] != null)
+                {
+                    for (int y = boardManager.board[i, j].yPosition + 1; y < 8; y++)
+                    {
+                        canMove[boardManager.board[i, j].xPosition, y] = false;
+                    }
+                }
+            }
+        }
 
         return canMove;
     } // MoveCheck
@@ -765,6 +780,19 @@ return null;
         // if board spot isnt null
         // for loop through yPos' for that spot and above
         // canMove = false;
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if(boardManager.board[i, j] != null){
+                    for (int y = boardManager.board[i, j].yPosition + 1; y < 8; y++)
+                    {
+                        canMove[boardManager.board[i, j].xPosition, y] = false;
+                    }
+                }
+            }
+        }
 
         return canMove;
     } // MoveCheck
