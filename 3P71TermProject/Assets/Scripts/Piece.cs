@@ -450,9 +450,9 @@ public class Piece : MonoBehaviour
                 }
     } // GetValue
 
-    void Promote(string newType)
+    public void Promote()
     {
-        type = newType;
+        type = DropDownHandler.newType;
     }
 
     // Start is called before the first frame update
@@ -480,6 +480,7 @@ public class Piece : MonoBehaviour
                     // end the game
                     Time.timeScale = 0;
                     Debug.Log("You lost!");
+
                 }
                 //then checkmate + game over
             }

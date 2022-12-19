@@ -334,6 +334,13 @@ return null;
                         //root.boardState[i,j].updatePiece(position.boardState[i,j].isTaken, position.boardState[i,j].isBlack, position.boardState[i,j].yPosition, position.boardState[i,j].xPosition,position.boardState[i,j].type);
 
                         root.boardState[i,j].updatePiece(position.children[stateTracker].boardState[i,j].isTaken, position.children[stateTracker].boardState[i,j].isBlack, position.children[stateTracker].boardState[i,j].yPosition, position.children[stateTracker].boardState[i,j].xPosition,position.children[stateTracker].boardState[i,j].type);
+                        if (root.boardState[i, j].type == "pawn" && root.boardState[i, j].yPosition == 7)
+                        {
+                            //root.boardState[i, j].Promote();
+
+                            //just made the ai pick a queen for now lol
+                            root.boardState[i, j].updatePiece(position.children[stateTracker].boardState[i, j].isTaken, position.children[stateTracker].boardState[i, j].isBlack, position.children[stateTracker].boardState[i, j].yPosition, position.children[stateTracker].boardState[i, j].xPosition, "queen");
+                        }
                     }
                 }
             }

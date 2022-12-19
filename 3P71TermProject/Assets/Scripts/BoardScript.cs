@@ -21,6 +21,9 @@ public class BoardScript : MonoBehaviour
     private int playerXPos;
     private bool pieceChosen = false;
 
+    [SerializeField]
+    public GameObject dropDownMenu;
+
 
     // Start is called before the first frame update
 
@@ -30,6 +33,7 @@ public class BoardScript : MonoBehaviour
         //test line 2 
 
         MakeBoard();
+        dropDownMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -67,9 +71,10 @@ public class BoardScript : MonoBehaviour
                         
                             if (!board[moveY, moveX].isBlack && board[moveY, moveX].type == "pawn" && board[moveY, moveX].yPosition == 0)
                             {
-                            // get input
-                                //board[moveY, moveX].promote(input);
-                            }
+                            dropDownMenu.SetActive(true);
+                                board[moveY, moveX].Promote();
+                            dropDownMenu.SetActive(false);
+                        }
 
                         pieceChosen = false;
                         miniMaxScript.updateBoard(true);
@@ -78,6 +83,7 @@ public class BoardScript : MonoBehaviour
                 }
             }
         }
+
 
         CheckCheck();
 
