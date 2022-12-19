@@ -62,7 +62,15 @@ public class BoardScript : MonoBehaviour
                         int moveY = -1 * (int)hit.collider.gameObject.transform.position.y;
                         Debug.Log("MOVE TO X: "+moveX+" Y: "+moveY);
                         board[moveY, moveX].updatePiece(board[playerYPos,playerXPos].isTaken, board[playerYPos,playerXPos].isBlack, moveY, moveX, board[playerYPos,playerXPos].type);
-                        board[playerYPos, playerXPos].updatePiece(false, false, playerYPos, playerXPos, "Empty");
+                        board[playerYPos, playerXPos].updatePiece(true, false, playerYPos, playerXPos, "Empty");
+
+                        
+                            if (!board[moveY, moveX].isBlack && board[moveY, moveX].type == "pawn" && board[moveY, moveX].yPosition == 0)
+                            {
+                            // get input
+                                //board[moveY, moveX].promote(input);
+                            }
+
                         pieceChosen = false;
                         miniMaxScript.updateBoard(true);
                     }
@@ -70,6 +78,8 @@ public class BoardScript : MonoBehaviour
                 }
             }
         }
+
+        CheckCheck();
 
     }
 
@@ -119,28 +129,53 @@ public class BoardScript : MonoBehaviour
 
     }// MakeBoard
 
-    void MovePiece() // board can have reference to the pieces,
+    void CheckCheck() // board can have reference to the pieces,
     {
-        // get input from user = pieceselected
-
-        // get input from user = someOtherSpot -- chosen spot (compare with canMove, set new coordinates on pieceselected)
-        //if board[someOtherSpot.xPosition, someOtherSpot.yPosition] != null
-        // board[someOtherSpot.xPosition, someOtherSpot.yPosition].isTaken = true;
-
-        //if (pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == board.Length-1){
-        //get input
-        //pieceselected.promote(input)
-
-        //if (!pieceSelected.isBlack && piece.Selected.type == "pawn" && pieceSelected.yPosition == 0){
-        //get input
-        //pieceselected.promote(input)
-
         //go through all opposing pieces, and within the piece go through all moves
         //if king is in any index of canMove that == true of opposing piece
         //check
 
-        //if spaces between king and rook is clear, king can move two spaces closer to rook and rook can jump 1 spot over king // castling
-    } // MovePiece
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (board[i, j].isBlack) // for ai
+                {
+                    bool[,] canMove = MiniMax.BlackMoveCheck(board[i, j]);
+                    for (int k = 0; k < 8; k++)
+                    {
+                        for (int l = 0; l < 8; l++)
+                        {
+                            if (canMove[k, l]==true && !board[k,l].isBlack && board[k,l].type == "king")
+                            {
+                                // check
+                                Debug.Log("Check.");
+                            }
+                        }
+                    }
+                } // ai
+
+
+                if (!board[i, j].isBlack) // for player
+                {
+                    bool[,] canMove = MiniMax.WhiteMoveCheck(board[i, j]);
+                    for (int k = 0; k < 8; k++)
+                    {
+                        for (int l = 0; l < 8; l++)
+                        {
+                            if (canMove[k, l] == true && board[k, l].isBlack && board[k, l].type == "king")
+                            {
+                                // check
+                                Debug.Log("Check.");
+                            }
+                        }
+                    }
+                } // player
+
+            }
+        } // end for
+        
+    } // CheckCheck
 
 
 

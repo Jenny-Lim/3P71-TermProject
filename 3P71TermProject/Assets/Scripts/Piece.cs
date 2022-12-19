@@ -25,7 +25,7 @@ public class Piece : MonoBehaviour
 
     public string type;
 
-    public bool[,] canMove; // also wait why is this here again
+    public bool[,] canMove;
 
     public bool pawnHasMoved = false;
 
@@ -466,9 +466,21 @@ public class Piece : MonoBehaviour
     {
         if (isTaken)
         {
-            // disable the piece
+            // disable the piece -- accounted for
             if (type == "king")
             {
+                if (isBlack)
+                {
+                    // end the game
+                    Time.timeScale = 0;
+                    Debug.Log("You win!");
+                }
+                else
+                {
+                    // end the game
+                    Time.timeScale = 0;
+                    Debug.Log("You lost!");
+                }
                 //then checkmate + game over
             }
         }

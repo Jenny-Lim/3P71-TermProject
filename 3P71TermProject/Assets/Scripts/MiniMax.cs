@@ -36,7 +36,7 @@ public class MiniMax : MonoBehaviour
     private GameObject whiteKing;
 
     [SerializeField]
-    private BoardScript boardManager;
+    private static BoardScript boardManager;
 
     //[SerializeField]
     //private List<GameObject> blackPieces;
@@ -383,7 +383,7 @@ return null;
 
     }
 
-    public bool[,] BlackMoveCheck(Piece p) // stop setting canmove to be true once an enemy piece is in the way --  if a board spot isnt null, then you can't move to the spots above it -- need reference to board, or move this into board and have pieces refer to this
+    public static bool[,] BlackMoveCheck(Piece p) // stop setting canmove to be true once an enemy piece is in the way --  if a board spot isnt null, then you can't move to the spots above it -- need reference to board, or move this into board and have pieces refer to this
     {
         bool[,] canMove = new bool[8, 8];
         for (int i = 0; i < 8; i++)
@@ -596,7 +596,7 @@ return null;
         return canMove;
     } // MoveCheck
 
-    public bool[,] WhiteMoveCheck(Piece p)
+    public static bool[,] WhiteMoveCheck(Piece p)
     {
         bool[,] canMove = new bool[8, 8];
         for (int i = 0; i < 8; i++)
