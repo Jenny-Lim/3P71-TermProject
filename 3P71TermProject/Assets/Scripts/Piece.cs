@@ -18,6 +18,7 @@ public class Piece : MonoBehaviour
     public bool isTaken; // if its taken
 
     public bool isBlack; // if its our (Ais)
+    public bool isWhite;
 
     // set these in board script
     public int xPosition;
@@ -30,23 +31,25 @@ public class Piece : MonoBehaviour
     public bool pawnHasMoved = false;
 
 
-    public Piece(bool isTaken, bool isBlack, int yPosition, int xPosition, string type)
+    public Piece(bool isTaken, bool isBlack, bool isWhite, int yPosition, int xPosition, string type)
     {
         this.isTaken = isTaken;
         this.isBlack = isBlack;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.type = type;
+        this.isWhite = isWhite;
         GetValue();
     }
 
-    public void updatePiece(bool isTaken, bool isBlack, int yPosition, int xPosition, string type)
+    public void updatePiece(bool isTaken, bool isBlack, bool isWhite, int yPosition, int xPosition, string type)
     {
         this.isTaken = isTaken;
         this.isBlack = isBlack;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.type = type;
+        this.isWhite = isWhite;
         GetValue();
     }
 

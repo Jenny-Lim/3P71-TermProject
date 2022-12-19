@@ -21,8 +21,26 @@ public class BoardScript : MonoBehaviour
     private int playerXPos;
     private bool pieceChosen = false;
 
+    private bool[,] playerMoves = new bool[8,8];
+
     [SerializeField]
     public GameObject dropDownMenu;
+
+        private static BoardScript instance;
+    public static BoardScript Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<BoardScript>();
+            }
+
+            return instance;
+
+        }
+        set {instance = value;}
+    }
 
 
     // Start is called before the first frame update
@@ -54,30 +72,38 @@ public class BoardScript : MonoBehaviour
                     if(hit.collider.tag == "PlayerPiece")
                     {
                     Debug.Log(hit.collider.gameObject);
-                    Debug.Log("XPOS: "+hit.collider.gameObject.transform.position.x);
+//                    Debug.Log("XPOS: "+hit.collider.gameObject.transform.position.x);
                     playerXPos = (int)hit.collider.gameObject.transform.position.x;
-                    Debug.Log("YPOS: "+hit.collider.gameObject.transform.position.y);
+         //           Debug.Log("YPOS: "+hit.collider.gameObject.transform.position.y);
                     playerYPos = -1 * (int)hit.collider.gameObject.transform.position.y;
+                    playerMoves = MiniMax.WhiteMoveCheck(board, board[playerYPos, playerXPos]);
                     pieceChosen = true;
                     }
                     else if(hit.collider.tag != "PlayerPiece" && pieceChosen)
                     {
                         int moveX = (int)hit.collider.gameObject.transform.position.x;
                         int moveY = -1 * (int)hit.collider.gameObject.transform.position.y;
-                        Debug.Log("MOVE TO X: "+moveX+" Y: "+moveY);
-                        board[moveY, moveX].updatePiece(board[playerYPos,playerXPos].isTaken, board[playerYPos,playerXPos].isBlack, moveY, moveX, board[playerYPos,playerXPos].type);
-                        board[playerYPos, playerXPos].updatePiece(true, false, playerYPos, playerXPos, "Empty");
+                        Debug.Log(moveX+" "+moveY+" "+playerMoves[moveY,moveX]);
+                        if(playerMoves[moveY,moveX])//if bool matrix spot is true
+                        {
+                            Debug.Log("MOVE TO X: "+moveX+" Y: "+moveY);
+                            board[moveY, moveX].updatePiece(board[playerYPos,playerXPos].isTaken, board[playerYPos,playerXPos].isBlack,board[playerYPos,playerXPos].isWhite, moveY, moveX, board[playerYPos,playerXPos].type);
+                            board[playerYPos, playerXPos].updatePiece(true, false,false, playerYPos, playerXPos, "Empty");
 
-                        
-                            if (!board[moveY, moveX].isBlack && board[moveY, moveX].type == "pawn" && board[moveY, moveX].yPosition == 0)
-                            {
-                            dropDownMenu.SetActive(true);
-                                board[moveY, moveX].Promote();
-                            dropDownMenu.SetActive(false);
+                            
+                                if (!board[moveY, moveX].isBlack && board[moveY, moveX].type == "pawn" && board[moveY, moveX].yPosition == 0)
+                                {
+                                dropDownMenu.SetActive(true);
+                                    board[moveY, moveX].Promote();
+                                dropDownMenu.SetActive(false);
+                                }
+
+                            pieceChosen = false;
+                            miniMaxScript.updateBoard(true);
+                            miniMaxScript.AITurn();
                         }
 
-                        pieceChosen = false;
-                        miniMaxScript.updateBoard(true);
+
                     }
 
                 }
@@ -98,22 +124,22 @@ public class BoardScript : MonoBehaviour
         {
             for(int j = 0;j<8;j++)
             {
-                board[i,j] = new Piece(false, false, i, j, "empty");
+                board[i,j] = new Piece(false, false,false, i, j, "empty");
             }
         }
 
-        board[0, 0] = new Piece(false, true, 0, 0, "rook");
-        board[0, 1] = new Piece(false, true, 0, 1, "knight");
-        board[0, 2] = new Piece(false, true, 0, 2, "bishop");
-        board[0, 3] = new Piece(false, true, 0, 3, "queen");
-        board[0, 4] = new Piece(false, true, 0, 4, "king");
-        board[0, 5] = new Piece(false, true, 0, 5, "bishop");
-        board[0, 6] = new Piece(false, true, 0, 6, "knight");
-        board[0, 7] = new Piece(false, true, 0, 7, "rook");
+        board[0, 0] = new Piece(false, true, false, 0, 0, "rook");
+        board[0, 1] = new Piece(false, true, false, 0, 1, "knight");
+        board[0, 2] = new Piece(false, true, false, 0, 2, "bishop");
+        board[0, 3] = new Piece(false, true, false, 0, 3, "queen");
+        board[0, 4] = new Piece(false, true, false, 0, 4, "king");
+        board[0, 5] = new Piece(false, true, false, 0, 5, "bishop");
+        board[0, 6] = new Piece(false, true, false, 0, 6, "knight");
+        board[0, 7] = new Piece(false, true, false, 0, 7, "rook");
 
         for (int i = 0; i < 8; i++)
         {
-            board[1, i] = new Piece(false, true, 1, i, "pawn");
+            board[1, i] = new Piece(false, true, false, 1, i, "pawn");
         }
 
 
@@ -121,17 +147,17 @@ public class BoardScript : MonoBehaviour
 
         for (int i = 0; i < 8; i++)
         {
-            board[6, i] = new Piece(false, false, 6, i, "pawn");
+            board[6, i] = new Piece(false, false, true, 6, i, "pawn");
         }
 
-        board[7, 0] = new Piece(false, false, 7, 0, "rook");
-        board[7, 1] = new Piece(false, false, 7, 1, "knight");
-        board[7, 2] = new Piece(false, false, 7, 2, "bishop");
-        board[7, 3] = new Piece(false, false, 7, 3, "queen");
-        board[7, 4] = new Piece(false, false, 7, 4, "king");
-        board[7, 5] = new Piece(false, false, 7, 5, "bishop");
-        board[7, 6] = new Piece(false, false, 7, 6, "knight");
-        board[7, 7] = new Piece(false, false, 7, 7, "rook");
+        board[7, 0] = new Piece(false, false, true, 7, 0, "rook");
+        board[7, 1] = new Piece(false, false, true, 7, 1, "knight");
+        board[7, 2] = new Piece(false, false, true, 7, 2, "bishop");
+        board[7, 3] = new Piece(false, false, true, 7, 3, "queen");
+        board[7, 4] = new Piece(false, false, true, 7, 4, "king");
+        board[7, 5] = new Piece(false, false, true, 7, 5, "bishop");
+        board[7, 6] = new Piece(false, false, true, 7, 6, "knight");
+        board[7, 7] = new Piece(false, false, true, 7, 7, "rook");
 
     }// MakeBoard
 
@@ -147,7 +173,7 @@ public class BoardScript : MonoBehaviour
             {
                 if (board[i, j].isBlack) // for ai
                 {
-                    bool[,] canMove = MiniMax.BlackMoveCheck(board[i, j]);
+                    bool[,] canMove = MiniMax.BlackMoveCheck(board, board[i, j]);
                     for (int k = 0; k < 8; k++)
                     {
                         for (int l = 0; l < 8; l++)
@@ -164,7 +190,7 @@ public class BoardScript : MonoBehaviour
 
                 if (!board[i, j].isBlack) // for player
                 {
-                    bool[,] canMove = MiniMax.WhiteMoveCheck(board[i, j]);
+                    bool[,] canMove = MiniMax.WhiteMoveCheck(board, board[i, j]);
                     for (int k = 0; k < 8; k++)
                     {
                         for (int l = 0; l < 8; l++)
