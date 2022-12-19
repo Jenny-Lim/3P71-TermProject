@@ -6,6 +6,8 @@ TagManager:
   tags:
   - BoardPiece
   - PlayerPiece
+  - VictoryScreen
+  - LostScreen
   layers:
   - Default
   - TransparentFX

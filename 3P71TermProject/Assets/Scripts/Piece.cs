@@ -489,26 +489,30 @@ public class Piece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isTaken)
+        if (isTaken && type == "king")
         {
             // disable the piece -- accounted for
-            if (type == "king")
-            {
+
                 if (isBlack)
                 {
                     // end the game
                     Time.timeScale = 0;
                     Debug.Log("You win!");
+                    GameObject winScreen;
+                    winScreen = GameObject.FindWithTag("VictoryScreen");
+                    winScreen.SetActive(true);
                 }
                 else
                 {
                     // end the game
                     Time.timeScale = 0;
                     Debug.Log("You lost!");
+                    GameObject loseScreen;
+                    loseScreen = GameObject.FindWithTag("LostScreen");
+                    loseScreen.SetActive(true);
 
                 }
                 //then checkmate + game over
-            }
         }
     } // Update
 
