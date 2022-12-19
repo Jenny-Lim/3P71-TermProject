@@ -446,7 +446,7 @@ public class Piece : MonoBehaviour
                 }
         if (type == "king")
         {
-            value = 0; // no point in assigning val to king ? -- wait actually it does matter, because pieces do want to aim for the king
+            value = 1800; // no point in assigning val to king ? -- wait actually it does matter, because pieces do want to aim for the king
                 }
     } // GetValue
 
