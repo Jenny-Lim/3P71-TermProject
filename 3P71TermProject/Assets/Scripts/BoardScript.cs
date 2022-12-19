@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/**
+ * This is a Chess board.
+ *
+ * @author Patrick Leonard (7008113), Jenny Lim (6978118)
+ * @version 1.0 (2022-19-12)
+ */
 public class BoardScript : MonoBehaviour
 {
 
@@ -27,6 +34,7 @@ public class BoardScript : MonoBehaviour
     public GameObject dropDownMenu;
 
         private static BoardScript instance;
+
     public static BoardScript Instance
     {
         get
@@ -40,19 +48,16 @@ public class BoardScript : MonoBehaviour
 
         }
         set {instance = value;}
-    }
+    } // Instance
 
 
     // Start is called before the first frame update
-
     void Start()
     {
-        // pogchamp
-        //test line 2 
 
         MakeBoard();
         dropDownMenu.SetActive(false);
-    }
+    } // Start
 
     // Update is called once per frame
     void Update()
@@ -113,9 +118,13 @@ public class BoardScript : MonoBehaviour
 
         CheckCheck();
 
-    }
+    } // Update
 
-    void MakeBoard() // bruh
+
+    /**
+     * Initialises the Chess board in code.
+     */
+    void MakeBoard()
     {
 
         // ai pieces - black
@@ -159,9 +168,13 @@ public class BoardScript : MonoBehaviour
         board[7, 6] = new Piece(false, false, true, 7, 6, "knight");
         board[7, 7] = new Piece(false, false, true, 7, 7, "rook");
 
-    }// MakeBoard
+    } // MakeBoard
 
-    void CheckCheck() // board can have reference to the pieces,
+
+    /**
+     * Checks if either player is in check.
+     */
+    void CheckCheck()
     {
         //go through all opposing pieces, and within the piece go through all moves
         //if king is in any index of canMove that == true of opposing piece
@@ -212,24 +225,25 @@ public class BoardScript : MonoBehaviour
 
 
 
-    int BoardEval() // maybe we pick a better heuristic
-    {
-        int eval = 0;
+    //int BoardEval() // maybe we pick a better heuristic
+    //{
+    //    int eval = 0;
 
-        for(int i = 0; i<8; i++)
-        {
-            for (int j = 0; j<8; j++)
-            {
-                if (board[i, j].isBlack) // ai - maximizing score
-                {
-                    eval = eval + board[i, j].value;
-                }
-                if (!board[i, j].isBlack) // player - minimizing score
-                {
-                    eval = eval - board[i, j].value;
-                }
-            }
-        }
-        return eval;
-    } // BoardEval
-}
+    //    for(int i = 0; i<8; i++)
+    //    {
+    //        for (int j = 0; j<8; j++)
+    //        {
+    //            if (board[i, j].isBlack) // ai - maximizing score
+    //            {
+    //                eval = eval + board[i, j].value;
+    //            }
+    //            if (!board[i, j].isBlack) // player - minimizing score
+    //            {
+    //                eval = eval - board[i, j].value;
+    //            }
+    //        }
+    //    }
+    //    return eval;
+    //} // BoardEval
+
+} // BoardScript

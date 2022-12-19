@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * This implements the Minimax algorithm
+ *
+ * @author Patrick Leonard (7008113), Jenny Lim (6978118)
+ * @version 1.0 (2022-19-12)
+ */
 public class MiniMax : MonoBehaviour
 {
     [SerializeField]
@@ -51,7 +57,7 @@ public class MiniMax : MonoBehaviour
     void Start()
     {
             updateBoard(true);
-    }
+    } // Start
 
     void Update()
     {
@@ -60,16 +66,27 @@ public class MiniMax : MonoBehaviour
         //boardArray();//get 2d array from board state - not necesary
         }
         //Debug.Log(boardManager.board[0,0].value);
-    }
+    } // Update
 
+
+    /**
+     * Starts AI's turn.
+     */
     public void AITurn()
     {
         root = CreateTree(depth); //create tree of board states
         Debug.Log("AI CHOOSES: "+MiniMaxAlgorithm(depth,depth ,root ,true, -1000000, 1000000)); //run minimax
         Debug.Log("alpha-beta counter: "+counter); //count number of 
         updateBoard(false);
-    }
+    } // AITurn
 
+
+    /**
+     * Creates Tree.
+     *
+     * @param depth The depth of the tree.
+     * @return Node The root node.
+     */
     private Node CreateTree(int depth)//creates tree from node
     {
         Node tree = new Node(); //default node
@@ -84,8 +101,14 @@ public class MiniMax : MonoBehaviour
         childrenNodes(depth, tree, true); //create children with depth specified
     
         return tree;//return built tree
-    }
+    } // CreateTree
 
+
+    /**
+     * Updates the board in code and graphically.
+     *
+     * @param playermove If it's the player's move or not.
+     */
     public void updateBoard(bool playermove)
     {
         Debug.Log("BOARD UPDATED");
@@ -177,8 +200,16 @@ public class MiniMax : MonoBehaviour
             }
         }
 
-    }
+    } // updateBoard
 
+
+    /**
+     * Gets children nodes of a node.
+     *
+     * @param depth The depth of the tree.
+     * @param node The parent node in question.
+     * @param isAITurn If its the A.I's turn.
+     */
     private void childrenNodes(int depth, Node node, bool isAITurn) //create nodes
     {   
         int arrayCount = 0;
@@ -260,9 +291,16 @@ public class MiniMax : MonoBehaviour
                 }
             }
         }
-    }
+    } // childrenNodes
 
-        public int BoardEval(Node node) // maybe we pick a better heuristic
+
+    /**
+     * Assigns the board a score.
+     *
+     * @param node The node that holds the current board state.
+     * @return int The evaluation.
+     */
+    public int BoardEval(Node node) // maybe we pick a better heuristic
     {
         int eval = 0;
 
@@ -283,11 +321,23 @@ public class MiniMax : MonoBehaviour
         return eval;
     } // BoardEval
 
-        // copied to minimax so can be used in algo with other piece arrays beside main
+    // copied to minimax so can be used in algo with other piece arrays beside main
 
     //maximizig - true = choose higher
     //minimizing = xhoose lower
 
+
+    /**
+     * The Minimax algorithm.
+     *
+     * @param depth The depth of the tree.
+     * @param trueDepth The end of the tree.
+     * @param position Possible move.
+     * @param maximizingPlayer If the A.I is to (hypothetically) be the maximizing player.
+     * @oaram alpha The alpha value for pruning.
+     * @param beta The beta value for pruning.
+     * @return int The best value.
+     */
     private int MiniMaxAlgorithm(int depth,int trueDepth, Node position, bool maximizingPlayer, int alpha, int beta)//minimax algo
     { 
 
@@ -388,9 +438,17 @@ public class MiniMax : MonoBehaviour
             return position.minValue; //return best value
         }
 
-    }
+    } // MiniMaxAlgorithm
 
-    public static bool[,] BlackMoveCheck(Piece[,] boardArray, Piece p) // stop setting canmove to be true once an enemy piece is in the way --  if a board spot isnt null, then you can't move to the spots above it -- need reference to board, or move this into board and have pieces refer to this
+
+    /**
+     * Checks where a black piece can move.
+     *
+     * @param boardArray The board state.
+     * @param p The piece to be moved.
+     * @return bool[,] The result.
+     */
+    public static bool[,] BlackMoveCheck(Piece[,] boardArray, Piece p)
     {
         bool north = false;
         bool northEast = false;
@@ -870,9 +928,17 @@ public class MiniMax : MonoBehaviour
         */
 
         return canMove;
-    } // MoveCheck
+    } // BlackMoveCheck
 
-        public static bool[,] WhiteMoveCheck(Piece[,] boardArray, Piece p) // stop setting canmove to be true once an enemy piece is in the way --  if a board spot isnt null, then you can't move to the spots above it -- need reference to board, or move this into board and have pieces refer to this
+
+    /**
+     * Checks where a white piece can move.
+     *
+     * @param boardArray The board state.
+     * @param p The piece to be moved.
+     * @return bool[,] The result.
+     */
+    public static bool[,] WhiteMoveCheck(Piece[,] boardArray, Piece p) // stop setting canmove to be true once an enemy piece is in the way --  if a board spot isnt null, then you can't move to the spots above it -- need reference to board, or move this into board and have pieces refer to this
     {
         bool north = false;
         bool northEast = false;
@@ -1322,12 +1388,17 @@ public class MiniMax : MonoBehaviour
         */
 
         return canMove;
-    }
+    } // WhiteMoveCheck
 
-}
+} // MiniMax
 
 
-
+/**
+ * This is a Node.
+ *
+ * @author Patrick Leonard (7008113), Jenny Lim (6978118)
+ * @version 1.0 (2022-19-12)
+ */
 public class Node //data stored in each node in tree
     {
 
@@ -1340,4 +1411,4 @@ public class Node //data stored in each node in tree
         public int beta = 1000000;//beta value - for pruning
         public string test;
         
-    }
+    } // Node
