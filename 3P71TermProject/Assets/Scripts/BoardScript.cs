@@ -12,6 +12,14 @@ using UnityEngine;
 public class BoardScript : MonoBehaviour
 {
 
+    public bool twoPlayer = false;
+
+    public bool blackTurn = false;
+    public bool whiteTurn = true;
+
+    [SerializeField]
+    public GameObject mainMenu;
+
     public Piece[,] board = new Piece[8,8];
 
     private Ray cameraRay;
@@ -74,52 +82,152 @@ public class BoardScript : MonoBehaviour
             {
                 if(Input.GetMouseButtonDown(0))
                 {
-                    if(hit.collider.tag == "PlayerPiece")
+                    if(!twoPlayer)
                     {
-                    Debug.Log(hit.collider.gameObject);
-//                    Debug.Log("XPOS: "+hit.collider.gameObject.transform.position.x);
-                    playerXPos = (int)hit.collider.gameObject.transform.position.x;
-         //           Debug.Log("YPOS: "+hit.collider.gameObject.transform.position.y);
-                    playerYPos = -1 * (int)hit.collider.gameObject.transform.position.y;
-                    playerMoves = MiniMax.WhiteMoveCheck(board, board[playerYPos, playerXPos]);
-                    pieceChosen = true;
-                    }
-                    else if(hit.collider.tag != "PlayerPiece" && pieceChosen)
-                    {
-                        int moveX = (int)hit.collider.gameObject.transform.position.x;
-                        int moveY = -1 * (int)hit.collider.gameObject.transform.position.y;
-                        Debug.Log(moveX+" "+moveY+" "+playerMoves[moveY,moveX]);
-                        if(playerMoves[moveY,moveX])//if bool matrix spot is true
+                        if(hit.collider.tag == "PlayerPiece")
                         {
-                            Debug.Log("MOVE TO X: "+moveX+" Y: "+moveY);
-                            board[moveY, moveX].updatePiece(board[playerYPos,playerXPos].isTaken, board[playerYPos,playerXPos].isBlack,board[playerYPos,playerXPos].isWhite, moveY, moveX, board[playerYPos,playerXPos].type);
-                            board[playerYPos, playerXPos].updatePiece(true, false,false, playerYPos, playerXPos, "Empty");
-
-                            
-                                if (!board[moveY, moveX].isBlack && board[moveY, moveX].type == "pawn" && board[moveY, moveX].yPosition == 0)
-                                {
-                                dropDownMenu.SetActive(true);
-                                    board[moveY, moveX].Promote();
-                                dropDownMenu.SetActive(false);
-                                }
-
-                            pieceChosen = false;
-                            miniMaxScript.updateBoard(true);
-                            miniMaxScript.AITurn();
+                        Debug.Log(hit.collider.gameObject);
+    //                    Debug.Log("XPOS: "+hit.collider.gameObject.transform.position.x);
+                        playerXPos = (int)hit.collider.gameObject.transform.position.x;
+            //           Debug.Log("YPOS: "+hit.collider.gameObject.transform.position.y);
+                        playerYPos = -1 * (int)hit.collider.gameObject.transform.position.y;
+                        playerMoves = MiniMax.WhiteMoveCheck(board, board[playerYPos, playerXPos]);
+                        pieceChosen = true;
                         }
+                        else if(hit.collider.tag != "PlayerPiece" && pieceChosen)
+                        {
+                            int moveX = (int)hit.collider.gameObject.transform.position.x;
+                            int moveY = -1 * (int)hit.collider.gameObject.transform.position.y;
+                            Debug.Log(moveX+" "+moveY+" "+playerMoves[moveY,moveX]);
+                            if(playerMoves[moveY,moveX])//if bool matrix spot is true
+                            {
+                                Debug.Log("MOVE TO X: "+moveX+" Y: "+moveY);
+                                board[moveY, moveX].updatePiece(board[playerYPos,playerXPos].isTaken, board[playerYPos,playerXPos].isBlack,board[playerYPos,playerXPos].isWhite, moveY, moveX, board[playerYPos,playerXPos].type);
+                                board[playerYPos, playerXPos].updatePiece(true, false,false, playerYPos, playerXPos, "Empty");
+
+                                
+                                    if (!board[moveY, moveX].isBlack && board[moveY, moveX].type == "pawn" && board[moveY, moveX].yPosition == 0)
+                                    {
+                                    dropDownMenu.SetActive(true);
+                                        board[moveY, moveX].Promote();
+                                    dropDownMenu.SetActive(false);
+                                    }
+
+                                pieceChosen = false;
+                                miniMaxScript.updateBoard(true);
+                                miniMaxScript.AITurn();
+                            }
 
 
+                        }
                     }
+                    if(twoPlayer && whiteTurn)
+                    {
 
-                }
+                        if(hit.collider.tag == "PlayerPiece")
+                        {
+                        Debug.Log(hit.collider.gameObject);
+    //                    Debug.Log("XPOS: "+hit.collider.gameObject.transform.position.x);
+                        playerXPos = (int)hit.collider.gameObject.transform.position.x;
+            //           Debug.Log("YPOS: "+hit.collider.gameObject.transform.position.y);
+                        playerYPos = -1 * (int)hit.collider.gameObject.transform.position.y;
+                        playerMoves = MiniMax.WhiteMoveCheck(board, board[playerYPos, playerXPos]);
+                        pieceChosen = true;
+                        }
+                        else if(hit.collider.tag != "PlayerPiece" && pieceChosen)
+                        {
+                            int moveX = (int)hit.collider.gameObject.transform.position.x;
+                            int moveY = -1 * (int)hit.collider.gameObject.transform.position.y;
+                            Debug.Log(moveX+" "+moveY+" "+playerMoves[moveY,moveX]);
+                            if(playerMoves[moveY,moveX])//if bool matrix spot is true
+                            {
+                                Debug.Log("MOVE TO X: "+moveX+" Y: "+moveY);
+                                board[moveY, moveX].updatePiece(board[playerYPos,playerXPos].isTaken, board[playerYPos,playerXPos].isBlack,board[playerYPos,playerXPos].isWhite, moveY, moveX, board[playerYPos,playerXPos].type);
+                                board[playerYPos, playerXPos].updatePiece(true, false,false, playerYPos, playerXPos, "Empty");
+
+                                
+                                    if (!board[moveY, moveX].isBlack && board[moveY, moveX].type == "pawn" && board[moveY, moveX].yPosition == 0)
+                                    {
+                                    dropDownMenu.SetActive(true);
+                                        board[moveY, moveX].Promote();
+                                    dropDownMenu.SetActive(false);
+                                    }
+                                
+                                whiteTurn = false;
+                                blackTurn = true;
+                                pieceChosen = false;
+                                miniMaxScript.updateBoard(true);
+                            }
+
+
+                        }
+                    }
+                    
+                    else if(twoPlayer && blackTurn)
+                    {
+
+                        if(hit.collider.tag == "BoardPiece")
+                        {
+                        Debug.Log(hit.collider.gameObject);
+    //                    Debug.Log("XPOS: "+hit.collider.gameObject.transform.position.x);
+                        playerXPos = (int)hit.collider.gameObject.transform.position.x;
+            //           Debug.Log("YPOS: "+hit.collider.gameObject.transform.position.y);
+                        playerYPos = -1 * (int)hit.collider.gameObject.transform.position.y;
+                        playerMoves = MiniMax.BlackMoveCheck(board, board[playerYPos, playerXPos]);
+                        pieceChosen = true;
+                        }
+                        else if(hit.collider.tag != "BoardPiece" && pieceChosen)
+                        {
+                            int moveX = (int)hit.collider.gameObject.transform.position.x;
+                            int moveY = -1 * (int)hit.collider.gameObject.transform.position.y;
+                            Debug.Log(moveX+" "+moveY+" "+playerMoves[moveY,moveX]);
+                            if(playerMoves[moveY,moveX])//if bool matrix spot is true
+                            {
+                                Debug.Log("MOVE TO X: "+moveX+" Y: "+moveY);
+                                board[moveY, moveX].updatePiece(board[playerYPos,playerXPos].isTaken, board[playerYPos,playerXPos].isBlack,board[playerYPos,playerXPos].isWhite, moveY, moveX, board[playerYPos,playerXPos].type);
+                                board[playerYPos, playerXPos].updatePiece(true, false,false, playerYPos, playerXPos, "Empty");
+
+                                
+                                    if (!board[moveY, moveX].isBlack && board[moveY, moveX].type == "pawn" && board[moveY, moveX].yPosition == 0)
+                                    {
+                                    dropDownMenu.SetActive(true);
+                                        board[moveY, moveX].Promote();
+                                    dropDownMenu.SetActive(false);
+                                    }
+
+
+                                blackTurn = false;
+                                whiteTurn = true;
+
+                                pieceChosen = false;
+                                miniMaxScript.updateBoard(true);
+                            }
+
+
+                        }
+                    }
+                    
             }
         }
+            
 
-
+        }
         CheckCheck();
 
     } // Update
 
+
+    public void set2Player()
+    {
+        twoPlayer = true;
+        whiteTurn = true;
+        mainMenu.SetActive(false);
+    }
+
+    public void set1Player()
+    {
+        mainMenu.SetActive(false);
+    }
 
     /**
      * Initialises the Chess board in code.

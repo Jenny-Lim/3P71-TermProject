@@ -470,7 +470,7 @@ public class MiniMax : MonoBehaviour
         if (p.type == "pawn") // pawns only move forward one tile at a time
         {
 
-            if (p.yPosition + 1 < 8 && !boardArray[p.yPosition+1,p.xPosition].isBlack && !boardArray[p.yPosition-1,p.xPosition].isWhite)
+            if (p.yPosition + 1 < 8 && !boardArray[p.yPosition+1,p.xPosition].isBlack && !boardArray[p.yPosition+1,p.xPosition].isWhite)
             {
                 canMove[p.yPosition + 1, p.xPosition] = true;
 
